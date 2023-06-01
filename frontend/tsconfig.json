@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "module": "CommonJS",
+    "target": "ESNext",
+    "jsx": "react-jsx",
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@styles/*": [
+        "./src/styles/*"
+      ],
+    }
+  },
+  "include": [
+    "src",
+    "types"
+  ]
+}

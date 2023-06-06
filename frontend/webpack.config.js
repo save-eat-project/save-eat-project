@@ -57,7 +57,7 @@ const config = {
         alias:{
             "@styles": path.resolve(__dirname, "src", "styles"),
         }
-    },
+    }
 };
 
 module.exports = () => {

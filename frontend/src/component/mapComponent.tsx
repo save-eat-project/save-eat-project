@@ -18,6 +18,10 @@ interface Props{
 interface Marker {
     /** Marker Title */
     title: string;
+    /** category */
+    category: string;
+    /** Latitude */
+    star: number;
     /** Latitude */
     lat: number;
     /** Longitude */
@@ -27,16 +31,22 @@ interface Marker {
 const TEMPORARY_MARKER_ARRAY:Marker[] = [
     {
         title:"케인인님",
+        category:"한식",
+        star:4.5,
         lat:37.50099124412733,
         lng:126.92195582690313
     },
     {
         title:"하더놈",
+        category:"한식",
+        star:4.0,
         lat:37.55462296347773,
         lng:126.97055261672732 
     },
     {
         title:"NAGA",
+        category:"한식",
+        star:3.5,
         lat:37.49994497956837,
         lng:126.92031146347219  
     }
@@ -69,13 +79,6 @@ export function MapComponent(props:Props) {
 
         const map = new naver.maps.Map("map", mapOptions);
 
-        TEMPORARY_MARKER_ARRAY.map((marker) => {
-            var position = new naver.maps.LatLng(marker.lat, marker.lng);
-            new naver.maps.Marker({
-                position: position,
-                map: map,           
-            });
-        });
         setState({
             ...state,
             naverMap:map
@@ -87,14 +90,24 @@ export function MapComponent(props:Props) {
         if(location.loaded === true){            
             if(!location.coordinates)
                 return;
+
+            const lat = location.coordinates.lat;
+            const lng = location.coordinates.lng;
             
+            //내 현재 위치 마커로 찍기
+            var position = new naver.maps.LatLng(lat, lng);
+            new naver.maps.Marker({
+                map: state.naverMap,
+                position: position,
+            });
+
             //GeoLocation이 성공적으로 Load됐을 경우, state.location에 위도경도를 set
             //이후 아래 useEffect가 렌더링 됐을 때 호출
             setState({
                 ...state,
                 currentLocation:{                        
-                    lat:location.coordinates.lat,
-                    lng:location.coordinates.lng
+                    lat:lat,
+                    lng:lng
                 }
             });
         }else if(location.loaded === false){
@@ -133,16 +146,17 @@ export function MapComponent(props:Props) {
         //20(10m)
         //21~(5m)
 
-        if(!state.naverMap) return;
+        if (!state.naverMap) return;
         state.naverMap.morph(new naver.maps.LatLng(lat, lng), 18);
         // var position = new naver.maps.LatLng(lat, lng);
-        var position = new naver.maps.LatLng(37.52818267851292, 126.84215524162691  );
 
-        new naver.maps.Marker({
-            map: state.naverMap,
-            position: position,
-            icon:{
-                content:`<div class="${styles.markerContainer}">
+        TEMPORARY_MARKER_ARRAY.map((marker) => {
+            var position = new naver.maps.LatLng(marker.lat, marker.lng);
+            new naver.maps.Marker({
+                map: state.naverMap,
+                position: position,
+                icon: {
+                    content: `<div class="${styles.markerContainer}">
                             <div class="${styles.markerBubble}">                            
                                 <div class="${styles.leftBox}">
                                     <img src="/fork.png">
@@ -150,20 +164,21 @@ export function MapComponent(props:Props) {
                                 </div>
                                 <div class="${styles.rightBox}">
                                     <div class="${styles.restaurantName}">
-                                    끼얏호우
+                                    ${marker.title}
                                     </div>
                                     <div class="${styles.bottom}">
                                         <div class="${styles.score}">
-                                        ☆4.5
+                                        ☆${marker.star}
                                         </div>
                                         <div class="${styles.category}">
-                                        한식
+                                        ${marker.category}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>`
-            }
+                }
+            });
         });
     }, [state.currentLocation]);
 

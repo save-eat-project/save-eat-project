@@ -2,17 +2,15 @@ import React, { useEffect, useState } from "react";
 import styles from '@styles/home.module.css';
 import useGeolocation from '../hook/useGeolocation';
 
-/*
-네이버지도 API
-https://navermaps.github.io/maps.js.ncp/docs/naver.maps.Map.html
-*/
+//https://www.npmjs.com/package/@types/kakaomaps
+//https://apis.map.kakao.com/web/
 
 interface Props{
     currentLocation?:{
         lat:number;
         lng:number
     }
-    naverMap?:naver.maps.Map
+    kakaoMap?:kakao.maps.Map
 };
 
 interface Marker {
@@ -66,13 +64,50 @@ export function MapComponent(props:Props) {
         let container = document.getElementById('map');
         
         let options = { //지도를 생성할 때 필요한 기본 옵션
-            center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
-            level: 3 //지도의 레벨(확대, 축소 정도)
+            center: new kakao.maps.LatLng(37.511337, 127.012084), //지도의 중심좌표.
+            level: 8 //지도의 레벨(확대, 축소 정도)
         };
     
         if(!container) return;
         
         let map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴    
+        map.setCopyrightPosition(kakao.maps.CopyrightPosition.BOTTOMRIGHT, true);   //zoom레벨 오른쪽아래로 설정(기본 왼쪽아래)
+
+        TEMPORARY_MARKER_ARRAY.map((marker) => {
+            var position = new kakao.maps.LatLng(marker.lat, marker.lng);
+            new kakao.maps.Marker({
+                map: map,
+                position: position,
+                icon: {
+                    content: `<div class="${styles.markerContainer}">
+                            <div class="${styles.markerBubble}">                            
+                                <div class="${styles.leftBox}">
+                                    <img src="/fork.png">
+                                    </img>
+                                </div>
+                                <div class="${styles.rightBox}">
+                                    <div class="${styles.restaurantName}">
+                                    ${marker.title}
+                                    </div>
+                                    <div class="${styles.bottom}">
+                                        <div class="${styles.score}">
+                                        ☆${marker.star}
+                                        </div>
+                                        <div class="${styles.category}">
+                                        ${marker.category}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`
+                }
+            });
+        });
+
+        setState({
+            ...state,
+            kakaoMap:map
+        })
     }, []);
 
     //GeoLocation(내 위치 찾기) 기능 useEffect
@@ -128,7 +163,26 @@ export function MapComponent(props:Props) {
         //19(20m)
         //20(10m)
         //21~(5m)
+
+        if(!state.kakaoMap) return;
         
+        // state.kakaoMap.setCenter(new kakao.maps.LatLng(lat, lng));
+        // state.kakaoMap.setLevel(3);
+        
+        //내 현재 위치 마커로 찍기
+        var position = new kakao.maps.LatLng(lat, lng);
+        new kakao.maps.Marker({
+            map: state.kakaoMap,
+            position: position,
+        });
+        
+        setState({
+            ...state,
+            currentLocation:{                        
+                lat:lat,
+                lng:lng
+            }
+        });        
     }, [state.currentLocation]);
 
     return (

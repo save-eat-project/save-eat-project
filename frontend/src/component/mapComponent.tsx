@@ -60,29 +60,19 @@ export function MapComponent(props:Props) {
         width: "80%",
         height: "600px",
     };
-
-    const markerStyle ={
-        position: "absolute",
-        right: "100px",
-        top: "100px",
-        borderLeft: "20px solid transparent",
-        borderRight: "20px solid transparent",
-        borderTop: "30px solid #22ac38"
-    }
     
     //Initialize Map 생성 useEffect
     useEffect(() => {
-        const mapOptions: naver.maps.MapOptions = {
-            center: new naver.maps.LatLng(37.511337, 127.012084),
-            zoom: 13,
+        let container = document.getElementById('map');
+        
+        let options = { //지도를 생성할 때 필요한 기본 옵션
+            center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+            level: 3 //지도의 레벨(확대, 축소 정도)
         };
-
-        const map = new naver.maps.Map("map", mapOptions);
-
-        setState({
-            ...state,
-            naverMap:map
-        })
+    
+        if(!container) return;
+        
+        let map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴    
     }, []);
 
     //GeoLocation(내 위치 찾기) 기능 useEffect
@@ -93,13 +83,6 @@ export function MapComponent(props:Props) {
 
             const lat = location.coordinates.lat;
             const lng = location.coordinates.lng;
-            
-            //내 현재 위치 마커로 찍기
-            var position = new naver.maps.LatLng(lat, lng);
-            new naver.maps.Marker({
-                map: state.naverMap,
-                position: position,
-            });
 
             //GeoLocation이 성공적으로 Load됐을 경우, state.location에 위도경도를 set
             //이후 아래 useEffect가 렌더링 됐을 때 호출
@@ -145,47 +128,13 @@ export function MapComponent(props:Props) {
         //19(20m)
         //20(10m)
         //21~(5m)
-
-        if (!state.naverMap) return;
-        state.naverMap.morph(new naver.maps.LatLng(lat, lng), 18);
-        // var position = new naver.maps.LatLng(lat, lng);
-
-        TEMPORARY_MARKER_ARRAY.map((marker) => {
-            var position = new naver.maps.LatLng(marker.lat, marker.lng);
-            new naver.maps.Marker({
-                map: state.naverMap,
-                position: position,
-                icon: {
-                    content: `<div class="${styles.markerContainer}">
-                            <div class="${styles.markerBubble}">                            
-                                <div class="${styles.leftBox}">
-                                    <img src="/fork.png">
-                                    </img>
-                                </div>
-                                <div class="${styles.rightBox}">
-                                    <div class="${styles.restaurantName}">
-                                    ${marker.title}
-                                    </div>
-                                    <div class="${styles.bottom}">
-                                        <div class="${styles.score}">
-                                        ☆${marker.star}
-                                        </div>
-                                        <div class="${styles.category}">
-                                        ${marker.category}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>`
-                }
-            });
-        });
+        
     }, [state.currentLocation]);
 
     return (
         <main>         
             <h1>지도</h1>
-            <div id="map" style={mapStyle}></div>
+            <div id="map" style={mapStyle}></div>            
         </main>
     )
 }

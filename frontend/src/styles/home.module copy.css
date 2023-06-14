@@ -1,0 +1,101 @@
+
+.title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+.markerContainer {
+    position: absolute;
+    transform: translateX(-50%) translateY(-100%);
+}
+
+.markerContainer .markerBubble {
+    background: #fff;
+    margin-bottom: 8px;
+    align-items: center;
+    /* padding: 3px; */
+    width: 140px;
+    height: 60px;
+    border-radius: 10px;
+    color: #000;
+    text-align: center;
+    border: 2px solid black;
+}
+
+/* 말풍선 화살표 (container와 살짝 겹쳐서 말풍선이 위치한 쪽의 테두리를 덮어서 안보이게 함) */
+.markerContainer .markerBubble:after {
+    content: '';
+    position: absolute;
+    bottom: -9px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 10px;
+    border-style: solid;
+    display: block;
+    border-color: #fff transparent transparent transparent;
+}
+
+/* 말풍선 화살표테두리 (after 삼각형보다 약간 더 큰 화살표를 만들어서 밑에 깜) */
+.markerContainer .markerBubble:before {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    display: block;
+    bottom: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 12px;
+    border-style: solid;
+    border-color: #000 transparent transparent transparent;
+}
+
+.markerContainer .markerBubble .topBox{
+    height: 40%;
+    width: 100%;
+    border-radius: 8px 8px 0 0;
+    background-color: coral;
+    display: flex;
+}
+
+.markerContainer .markerBubble .topBox .leftBox{
+    width: 20%;
+}
+
+.markerContainer .markerBubble .topBox .leftBox img {
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+.markerContainer .markerBubble .topBox .middleBox{
+    width: 20%;
+}
+
+.markerContainer .markerBubble .topBox .rightBox{
+    width: 60%;
+}
+
+.markerContainer .markerBubble .downBox{
+    height: 60%;
+    width: 100%;
+    font-size: 12px;
+}
+
+.restaurantName{
+    font-size: 12px;
+    /* height: 60%; */
+    /* font-size: 16px;
+    font-weight: 600; */
+}
+
+.restaurantScore{
+    font-size: 12px;
+    padding-left: 10%;
+    width:50%;
+}
+
+.restaurantCategory{
+    width:50%;
+    font-size: 12px;
+}

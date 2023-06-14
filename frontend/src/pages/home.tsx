@@ -1,5 +1,4 @@
 import styles from '@styles/home.module.css';
-// import { MapComponent } from '../component/mapComponent';
 import { MapComponent } from '../component/mapComponent';
 
 export function HomePage() {

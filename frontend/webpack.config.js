@@ -19,7 +19,7 @@ const config = {
     },
     devServer: {
         open: true,
-        host: 'localhost',
+        host: '0.0.0.0',
         static: {
             directory: path.join(__dirname, 'public'),
         },

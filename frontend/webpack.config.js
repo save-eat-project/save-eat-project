@@ -17,6 +17,7 @@ const config = {
     devServer: {
         open: true,
         host: '0.0.0.0',
+        allowedHosts: "all",
         static: {
             directory: path.join(__dirname, 'public'),
         },

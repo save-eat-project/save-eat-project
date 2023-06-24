@@ -1,0 +1,10 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: "SpoqaHanSansNeo";
+    src: url("../../public/SpoqaHanSansNeo-Bold.ttf") format("truetype");
+}
+
+.hidden{
+    display: none;
+}

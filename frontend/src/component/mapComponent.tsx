@@ -1,29 +1,33 @@
-import React, { useEffect, useState } from "react";
-import styles from '@styles/home.module.css';
-import useGeolocation from '../hook/useGeolocation';
+import React, { useEffect, useState, useContext } from "react"
+import styles from '@styles/mapComponent.module.css'
+import useGeolocation from '../hook/useGeolocation'
+import kakaoMapContext from "../hook/kakaoMapContext"
 
 //https://www.npmjs.com/package/@types/kakaomaps
 //https://apis.map.kakao.com/web/
 
 interface Props{
     currentLocation?:{
-        lat:number;
+        lat:number
         lng:number
     }
     kakaoMap?:kakao.maps.Map
-};
+}
 
 interface Marker {
     /** place name */
-    name: string;
+    name: string
     /** place address */
-    address: string;
+    address: string
     /** star rate */
-    star: number;
+    star: number
     /** Latitude */
-    lat: number;
+    lat: number
     /** Longitude */
-    lng: number;
+    lng: number
+
+    /** ImagePath */
+    img: string
 }
 
 const TEMPORARY_MARKER_ARRAY:Marker[] = [
@@ -32,50 +36,46 @@ const TEMPORARY_MARKER_ARRAY:Marker[] = [
         address:"서울 강서구 월정로 108 해창위너스빌",
         star:4.0,
         lat:37.52881156943704,
-        lng:126.83914457889723
+        lng:126.83914457889723,
+        img: ""
     },
     {
         name:"ALLPUB",
         address:"서울 강서구 강서로5나길 118 2층 ALLPUB",
         star:4.0,
         lat:37.528443203079554,
-        lng:126.84158337385955 
+        lng:126.84158337385955,
+        img: ""
     },
     {
         name:"하서랑 만두 국수",
         address:"서울 강서구 곰달래로 105 1층",
         star:3.5,
         lat:37.53053291184251,
-        lng:126.84451199458245   
+        lng:126.84451199458245,
+        img: "" 
     }
-];
+]
 
 export function MapComponent(props:Props) {
-    const [state,setState] = useState(props);
-    const location = useGeolocation();
-    
-    //Place 검색 서비스
-    // var callback = function(result:any[], status:kakao.maps.services.Status, pagination:kakao.maps.services.Pagination) {
-    //     if (status === kakao.maps.services.Status.OK) {
-    //         console.log(result);
-    //         console.log(pagination);
-    //     }
-    // };
+    var mapContext = useContext(kakaoMapContext)
+    const [state,setState] = useState(props)
+    const location = useGeolocation()
 
-    //Initialize Map 생성 useEffect
+    //Initialize시 Map 생성 useEffect
     useEffect(() => {
-        let container = document.getElementById('map');           
-        if(!container) return;
+        let container = document.getElementById('map')           
+        if(!container) return
         
         let map = new kakao.maps.Map(container, {
             center: new kakao.maps.LatLng(37.511337, 127.012084), //지도의 중심좌표.
             level: 8 //지도의 레벨(확대, 축소 정도)            
-        });
-        map.setCopyrightPosition(kakao.maps.CopyrightPosition.BOTTOMRIGHT, true);   //zoom레벨 오른쪽아래로 설정(기본 왼쪽아래)
+        })
+        map.setCopyrightPosition(kakao.maps.CopyrightPosition.BOTTOMRIGHT, true)   //zoom레벨 오른쪽아래로 설정(기본 왼쪽아래)
 
-        TEMPORARY_MARKER_ARRAY.map((marker) => {
-            var position = new kakao.maps.LatLng(marker.lat, marker.lng);
-            new kakao.maps.CustomOverlay({
+        var markers = TEMPORARY_MARKER_ARRAY.map((marker) => {
+            var position = new kakao.maps.LatLng(marker.lat, marker.lng)
+            return new kakao.maps.CustomOverlay({
                 map: map,
                 position: position,
                 content: `<div class="${styles.markerContainer}">
@@ -84,14 +84,26 @@ export function MapComponent(props:Props) {
                                     <div class="${styles.iconBox}">                            
                                         <div class="${styles.img}">    
                                         </div>                                  
-                                    </div>      
+                                    </div>                                         
                                     <div class="${styles.restaurantName}">  
                                         ${marker.name}       
-                                    </div>             
+                                    </div>               
+                                    <div class="${styles.starRate}">                                           
+                                        <div>                          
+                                            <div class="${styles.img}">    
+                                            </div>                                      
+                                            <div>    
+                                                ${marker.star}    
+                                            </div>  
+                                        </div>       
+                                    </div>     
                                 </div> 
                                 <div class="${styles.contentBox}">    
                                     <div class="${styles.imageBox}">    
-                                        <div class="${styles.img}">    
+                                        <div
+                                            class="${styles.img}" 
+                                        > 
+                                               
                                         </div>                          
                                     </div>                          
                                     <div class="${styles.infoBox}">   
@@ -101,60 +113,84 @@ export function MapComponent(props:Props) {
                             </div>
                         </div>`
                 
-            });
-        });      
+            })
+        })      
+
+        // background-image: url('../../public/iconmonstr-picture-thin.svg')
+
+        // var clusterer = new kakao.maps.MarkerClusterer(
+        //     {
+        //         markers: markers,
+        //         map: map,
+        //         gridSize: 35,
+        //         averageCenter: true,
+        //         minLevel: 6,
+        //         disableClickZoom: true,
+        //         // styles: [{
+        //         //     width : '53px', height : '52px',
+        //         //     background: 'url(cluster.png) no-repeat',
+        //         //     color: '#fff',
+        //         //     textAlign: 'center',
+        //         //     lineHeight: '54px'
+        //         // }]
+        //     }
+        // )
+
+        mapContext.setMapElement(map)
 
         setState({
             ...state,
             kakaoMap:map
         })
-    }, []);
+    }, [])
 
     //GeoLocation(내 위치 찾기) 기능 useEffect
     useEffect(() => {
-        SaveLocation();
-    }, [location.loaded]);
+        SaveLocation()
+    }, [location.loaded])
     
     //state.currentLocation 업데이트될 때 호출.
     //지도를 현재 위치로 이동하며, 현재 위치에 마커를 생성합니다.
     useEffect(() => {
         if(!state.currentLocation)
-            return;
+            return
 
         if(!state.kakaoMap)
-            return;
+            return
 
-        var lat = state.currentLocation.lat;
-        var lng = state.currentLocation.lng;
+        var lat = state.currentLocation.lat
+        var lng = state.currentLocation.lng
         
-        state.kakaoMap.setCenter(new kakao.maps.LatLng(lat, lng));
-        state.kakaoMap.setLevel(3);
+        state.kakaoMap.setCenter(new kakao.maps.LatLng(lat, lng))
+        state.kakaoMap.setLevel(3)
 
         //내 현재 위치 마커로 찍기
-        var position = new kakao.maps.LatLng(lat, lng);
+        var position = new kakao.maps.LatLng(lat, lng)
+        
+        // 마커 이미지의 이미지 주소입니다
+        var imageSize = new kakao.maps.Size(24, 35) 
+        var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png" 
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize) 
+    
         new kakao.maps.Marker({
             map: state.kakaoMap,
             position: position,
-        });
-        
-        //Place 검색 서비스
-        // var places = new kakao.maps.services.Places(undefined!);        
-        // places.keywordSearch('온센텐동', callback, {
-        //     location:new kakao.maps.LatLng(lat, lng)
-        // });
-    }, [state.currentLocation]);
+            image : markerImage,
+            title:"내 위치"
+        })
+    }, [state.currentLocation])
 
     const onCurrentLocationClick = () => {
-        SaveLocation();
+        SaveLocation()
     }
 
     function SaveLocation(){        
         if(location.loaded === true){            
             if(!location.coordinates)
-                return;
+                return
 
-            const lat = location.coordinates.lat;
-            const lng = location.coordinates.lng;
+            const lat = location.coordinates.lat
+            const lng = location.coordinates.lng
 
             //GeoLocation이 성공적으로 Load됐을 경우, state.location에 위도경도를 set
             //이후 아래 useEffect가 렌더링 됐을 때 호출
@@ -164,12 +200,12 @@ export function MapComponent(props:Props) {
                     lat:lat,
                     lng:lng
                 }
-            });
+            })
         }else if(location.loaded === false){
             if(location.error?.code !== undefined){
                 console.log("Geolocation Load Error\n"
                 + "code : " + location.error?.code + "\n"
-                + "message : " + location.error?.message);
+                + "message : " + location.error?.message)
             }            
         }
     }
@@ -178,8 +214,13 @@ export function MapComponent(props:Props) {
         <main>         
             <h1>지도</h1>
             <div className={styles.mapContainer}>
-                <div id="map" className={styles.kakaoMap}></div>       
-                <button className={styles.locationButton} onClick={onCurrentLocationClick}></button>     
+                <div id="map" className={styles.kakaoMap}></div>
+                <button className={styles.locationButton} onClick={onCurrentLocationClick}>
+                    <div className={styles.locationButtonImage}></div>
+                    <div className={styles.locationButtonText}>
+                        내 위치
+                    </div>     
+                </button>                     
             </div>
         </main>
     )

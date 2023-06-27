@@ -168,8 +168,8 @@ export function MapComponent(props:Props) {
         var position = new kakao.maps.LatLng(lat, lng)
         
         // 마커 이미지의 이미지 주소입니다
-        var imageSize = new kakao.maps.Size(24, 35) 
-        var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png" 
+        var imageSize = new kakao.maps.Size(48, 48) 
+        var imageSrc = './NewCurrentPoint_Red.svg' 
         var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize) 
     
         new kakao.maps.Marker({
@@ -211,7 +211,7 @@ export function MapComponent(props:Props) {
     }
 
     return (
-        <main>         
+        <div>         
             <h1>지도</h1>
             <div className={styles.mapContainer}>
                 <div id="map" className={styles.kakaoMap}></div>
@@ -222,6 +222,6 @@ export function MapComponent(props:Props) {
                     </div>     
                 </button>                     
             </div>
-        </main>
+        </div>
     )
 }

@@ -25,7 +25,6 @@ export function SearchComponent() {
     const [state,setState] = useState<State>({})
     const [searchText, setSearchText] = useState('')
 
-    //Place 검색 서비스 테스트 코드
     var callback = function(result:any[], status:kakao.maps.services.Status, pagination:kakao.maps.services.Pagination) {
         if (status === kakao.maps.services.Status.OK) {
             setState({
@@ -81,11 +80,13 @@ export function SearchComponent() {
 
     const onSearchButtonClick = () => {
         if(searchText === "" ) return
-
-        var places = new kakao.maps.services.Places(undefined!)        
+        console.log(mapContext.mapElement?.getCenter())
+        // console.
+        var places = new kakao.maps.services.Places(undefined!)
         places.keywordSearch(searchText, callback, {
-            location: new kakao.maps.LatLng(37.511337, 127.012084), //지도의 중심좌표.
-            category_group_code: "FD6"
+            location: mapContext.mapElement?.getCenter(),
+            category_group_code: "FD6",
+            sort: kakao.maps.services.SortBy.DISTANCE
         })
     }
 
@@ -97,22 +98,22 @@ export function SearchComponent() {
         const jsonObject = JSON.parse(jsonString)
 
         return(
-            <table id="SearchResultTable">
+            <table>
                 <thead>
                     <tr>
-                        <th className={styles.index}>
+                        <th>
                             인덱스
                         </th>
-                        <th className={styles.placeName}>
+                        <th>
                             이름
                         </th>
-                        <th className={styles.address}>
+                        <th>
                             주소
                         </th>
-                        <th className={styles.category}>
+                        <th>
                             카테고리
                         </th>
-                        <th className={styles.button}>
+                        <th>
                             선택
                         </th>
                         <th className={styles.hidden}>
@@ -180,7 +181,7 @@ export function SearchComponent() {
     }
 
     return (
-        <main>         
+        <div>         
             <h1>검색</h1>
             <input value={searchText} onChange={onSearchTextChange}></input>
             <button onClick={onSearchButtonClick}>검색</button>
@@ -199,7 +200,7 @@ export function SearchComponent() {
             >
                 다음페이지
             </button>
-            <div>
+            <div className={styles.SearchResultTableContainer}>
                 {SearchResultReturn()}
             </div>
             {
@@ -208,6 +209,6 @@ export function SearchComponent() {
                 :null                
             }
             
-        </main>
+        </div>
     )
 }

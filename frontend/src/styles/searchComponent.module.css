@@ -5,6 +5,28 @@
     src: url("../../public/SpoqaHanSansNeo-Bold.ttf") format("truetype");
 }
 
-.hidden{
-    display: none;
+.SearchResultTableContainer{
+    height: 110px;
+    overflow: auto;
+    table{
+        thead{
+            tr{
+                th{
+                    
+                }
+            }
+        }
+        tbody{
+            tr{
+                td{
+    
+                }
+            }
+    
+        }
+    
+        .hidden{
+            display: none;
+        }
+    }
 }

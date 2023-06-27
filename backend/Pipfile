@@ -12,6 +12,7 @@ django-admin-honeypot = "*"
 
 [dev-packages]
 autopep8 = "*"
+djangorestframework-stubs = "*"
 
 [requires]
 python_version = "3.10"

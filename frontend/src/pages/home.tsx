@@ -9,8 +9,8 @@ export function HomePage() {
   return <div className={styles.title}>
     <img src="logo.png" />
     <kakaoMapContext.Provider value={{mapElement, setMapElement}}>
-      <MapComponent/>
       <SearchComponent/>
+      <MapComponent/>
     </kakaoMapContext.Provider>
   </div>
 }

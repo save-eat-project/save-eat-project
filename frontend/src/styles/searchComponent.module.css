@@ -1,32 +1,72 @@
 @charset "UTF-8";
 
 @font-face {
-    font-family: "SpoqaHanSansNeo";
+    font-family: "SpoqaHanSansNeo_Bold";
     src: url("../../public/SpoqaHanSansNeo-Bold.ttf") format("truetype");
 }
 
-.SearchResultTableContainer{
-    height: 110px;
+@font-face {
+    font-family: "SpoqaHanSansNeo";
+    src: url("../../public/SpoqaHanSansNeo-Regular.ttf") format("truetype");
+}
+
+
+.SearchResultContainer{
+    height: 200px;
     overflow: auto;
-    table{
-        thead{
-            tr{
-                th{
-                    
+    
+    .SearchList{
+        font-family: "SpoqaHanSansNeo";
+        padding-inline-start: 10px;
+        .SearchCard{
+            list-style: none;
+            border: 1px solid gray;
+            border-bottom: none;
+            .Top{
+                display: flex;
+                font-size: large;
+                .PlaceName{
+                    color: #FF6347;
+                    font-family: "SpoqaHanSansNeo_Bold";
+                }
+                .Category{
+                    margin-left: 5px;
+                    color: #666;
+                }
+            }
+            .Content{
+                display: flex;
+                flex-direction: column;
+                .Address{
+
+                }
+                .Url{
+
+                }
+                .Phone{
+
+                }
+                .Button{
+
                 }
             }
         }
-        tbody{
-            tr{
-                td{
-    
-                }
-            }
-    
+        .SearchCard:nth-last-of-type(1){
+            border: 1px solid gray;
         }
-    
-        .hidden{
-            display: none;
+        .Page{            
+            display: flex;
+            align-items: center;          
+
+            .LeftButton{
+                
+            }
+            .PageNumber{
+
+            }
+            .RightButton{
+
+            }
         }
     }
 }

@@ -28,6 +28,7 @@
     "webpack-dev-server": "^4.15.0"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.1.4",
     "@types/kakaomaps": "^1.1.2",
     "axios": "^1.4.0",
     "date-fns": "^2.30.0",

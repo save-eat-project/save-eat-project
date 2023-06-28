@@ -1,20 +1,20 @@
 @charset "UTF-8";
 
 @font-face {
-    font-family: "SpoqaHanSansNeo";
+    font-family: "SpoqaHanSansNeo_Bold";
     src: url("../../public/SpoqaHanSansNeo-Bold.ttf") format("truetype");
 }
 
 .title {
     font-size: 20px;
     font-weight: bold;
-    font-family: "SpoqaHanSansNeo";
+    font-family: "SpoqaHanSansNeo_Bold";
 }
 
 .markerContainer {
     position: absolute;
     transform: translateX(-50%) translateY(-100%);
-    font-family: "SpoqaHanSansNeo";
+    font-family: "SpoqaHanSansNeo_Bold";
     /* 말풍선 화살표 (container와 살짝 겹쳐서 말풍선이 위치한 쪽의 테두리를 덮어서 안보이게 함) */
     /* 말풍선 화살표테두리 (after 삼각형보다 약간 더 큰 화살표를 만들어서 밑에 깜) */
     .markerBubble {
@@ -151,7 +151,7 @@
     right: 10px;
     bottom: 50px;
     z-index: 100;
-    font-family: "SpoqaHanSansNeo";
+    font-family: "SpoqaHanSansNeo_Bold";
     display: flex;
     flex-direction: column;            
     .locationButtonImage {

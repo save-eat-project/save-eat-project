@@ -9,6 +9,7 @@ django-rest-knox = "*"
 djangorestframework = "*"
 google-api-python-client = "*"
 django-admin-honeypot = "*"
+python-dotenv = "*"
 
 [dev-packages]
 autopep8 = "*"

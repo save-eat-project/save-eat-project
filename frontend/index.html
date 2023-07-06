@@ -6,7 +6,12 @@
         <title>SaveEat</title>
         <script
             type="text/javascript"
-            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2b343beb30d6bac8eddca72292c8fd19&libraries=services,clusterer">
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=<%= KAKAO_JS_API_TOKEN %>&libraries=services,clusterer">
+            //쿼터 제한
+            //https://developers.kakao.com/docs/latest/ko/quota/common
+            //기본 지도 JS SDK 30만건
+            //키워드 장소 검색 10만건
+            //주소 검색 10만건
         </script>
     </head>
 </html>

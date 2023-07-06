@@ -2,18 +2,22 @@ import React, { useEffect, useState, useContext } from "react"
 import styles from '@styles/mapComponent.module.css'
 import useGeolocation from '../hook/useGeolocation'
 import kakaoMapContext from "../hook/kakaoMapContext"
+import {MARKER_TYPE, MarkerComponent} from "../component/markerComponent"
 
 //https://www.npmjs.com/package/@types/kakaomaps
 //https://apis.map.kakao.com/web/
 
-interface Props{
+//state 인터페이스
+interface State{
     currentLocation?:{
         lat:number
         lng:number
     }
     kakaoMap?:kakao.maps.Map
+    markerPosition?:[number, number]
 }
 
+//마커 정보 인터페이스
 interface Marker {
     /** place name */
     name: string
@@ -30,6 +34,7 @@ interface Marker {
     img: string
 }
 
+//테스트용 임시 마커 DB
 const TEMPORARY_MARKER_ARRAY:Marker[] = [
     {
         name:"할매칼국수",
@@ -57,9 +62,9 @@ const TEMPORARY_MARKER_ARRAY:Marker[] = [
     }
 ]
 
-export function MapComponent(props:Props) {
+export function MapComponent() {
     var mapContext = useContext(kakaoMapContext)
-    const [state,setState] = useState(props)
+    const [state,setState] = useState<State>({})
     const location = useGeolocation()
 
     //Initialize시 Map 생성 useEffect
@@ -115,9 +120,8 @@ export function MapComponent(props:Props) {
                 
             })
         })      
-
-        // background-image: url('../../public/iconmonstr-picture-thin.svg')
-
+        
+        //마커 클러스터 테스트코드
         // var clusterer = new kakao.maps.MarkerClusterer(
         //     {
         //         markers: markers,
@@ -164,19 +168,9 @@ export function MapComponent(props:Props) {
         state.kakaoMap.setCenter(new kakao.maps.LatLng(lat, lng))
         state.kakaoMap.setLevel(3)
 
-        //내 현재 위치 마커로 찍기
-        var position = new kakao.maps.LatLng(lat, lng)
-        
-        // 마커 이미지의 이미지 주소입니다
-        var imageSize = new kakao.maps.Size(48, 48) 
-        var imageSrc = './NewCurrentPoint_Red.svg' 
-        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize) 
-    
-        new kakao.maps.Marker({
-            map: state.kakaoMap,
-            position: position,
-            image : markerImage,
-            title:"내 위치"
+        setState({
+            ...state,
+            markerPosition:[lat,lng]
         })
     }, [state.currentLocation])
 
@@ -220,7 +214,12 @@ export function MapComponent(props:Props) {
                     <div className={styles.locationButtonText}>
                         내 위치
                     </div>     
-                </button>                     
+                </button>  
+                {
+                    (state.markerPosition)
+                    ?<MarkerComponent position={state.markerPosition} markerType={MARKER_TYPE.MYLOCATION}/>
+                    :null                
+                }                          
             </div>
         </div>
     )

@@ -7,7 +7,6 @@ import { HashRouter } from 'react-router-dom';
 const app = document.createElement('div')
 document.body.appendChild(app)
 
-
 const root = createRoot(app);
 root.render(
   <RecoilRoot>

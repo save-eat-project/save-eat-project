@@ -3,6 +3,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const webpack = require('webpack');
 
 const isProduction = process.env.NODE_ENV == 'production';
 
@@ -25,7 +26,13 @@ const config = {
     plugins: [
         new HtmlWebpackPlugin({
             template: 'index.html',
+            templateParameters: {
+                KAKAO_JS_API_TOKEN: '2b343beb30d6bac8eddca72292c8fd19'
+            }
         }),
+        new webpack.DefinePlugin({
+            MAX_DISPLAYED_SEARCHRESULT: '15'  //KAKAO 장소검색 API에서, 한 페이지에 보여질 최대 결과 갯수를 지정합니다. 범위 1~15
+        })
 
         // Add your plugins here
         // Learn more about plugins from https://webpack.js.org/configuration/plugins/

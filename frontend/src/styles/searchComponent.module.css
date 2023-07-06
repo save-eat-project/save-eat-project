@@ -29,14 +29,16 @@
                     color: #FF6347;
                     font-family: "SpoqaHanSansNeo_Bold";
                 }
-                .Category{
-                    margin-left: 5px;
-                    color: #666;
+                .GoToMap{
+                    
                 }
             }
             .Content{
                 display: flex;
                 flex-direction: column;
+                .Category{
+                    color: #666;
+                }
                 .Address{
 
                 }

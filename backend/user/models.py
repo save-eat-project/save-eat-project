@@ -1,3 +1,4 @@
+from typing import Any, cast
 from django.db import models, transaction
 from django.contrib.auth.models import AbstractUser, UserManager as BaseUserManager
 from uuid import uuid4
@@ -13,13 +14,12 @@ class UserManager(BaseUserManager):
         name: str,
         email: str | None = None,
         avatar_url: str | None = None,
-    ) -> 'User':
-
-        user = self.create_user(
+    ) :
+        user = cast(User, self.create_user(
             username=str(uuid4()),
             email=email,
             password=None,
-        )
+        ))
         OAuth.objects.create(
             user=user,
             auth_id=auth_id,
@@ -36,10 +36,10 @@ class UserManager(BaseUserManager):
 
 class User(AbstractUser):
 
-    first_name = None
-    last_name = None
+    first_name = None   # type: ignore
+    last_name = None    # type: ignore
 
-    objects = UserManager()
+    objects = UserManager()  # type: ignore
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = []

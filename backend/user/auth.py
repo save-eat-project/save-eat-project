@@ -7,8 +7,10 @@ import google.oauth2.id_token as google_oauth
 import google.auth.transport.requests
 from google.auth.exceptions import GoogleAuthError
 
+
 from .settings import GOOGLE_OAUTH_CLIENT_ID
 from .typing import OAuthDataDict
+from .models import User
 
 
 class OAuthSerializer(serializers.Serializer):
@@ -22,7 +24,7 @@ class OAuthSerializer(serializers.Serializer):
     validated_data: OAuthDataDict
 
 
-def create_token(user):
+def create_token(user: User):
     _, token = AuthToken.objects.create(user)
     return token
 
@@ -30,7 +32,7 @@ def create_token(user):
 def verify_google_oauth(token: str):
     request = google.auth.transport.requests.Request()
     try:
-        parsed = google_oauth.verify_oauth2_token(
+        parsed: dict = google_oauth.verify_oauth2_token(
             token, request, GOOGLE_OAUTH_CLIENT_ID
         )
     except GoogleAuthError:

@@ -10,6 +10,9 @@
     src: url("../../public/SpoqaHanSansNeo-Regular.ttf") format("truetype");
 }
 
+.SearchTypeContainer{
+    input[type=radio] { display:none;  }     
+}
 
 .SearchResultContainer{
     height: 200px;

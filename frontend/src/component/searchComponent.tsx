@@ -40,6 +40,22 @@ export function SearchComponent() {
     const mapContext = useContext(kakaoMapContext)
     const [state,setState] = useState<State>({})
     const [searchText, setSearchText] = useState('')    //검색어 보관용
+    const [searchType, setSearchType]
+            = useState<kakao.maps.services.SortBy>(kakao.maps.services.SortBy.ACCURACY) //라디오버튼 구분용
+
+    const onRadioChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+        //검색 타입 다른걸로 변경하면 검색 결과 초기화
+        setState({
+            ...state,
+            search:undefined
+        })
+
+        if(e.target.value === kakao.maps.services.SortBy.ACCURACY.toString()){
+            setSearchType(kakao.maps.services.SortBy.ACCURACY)
+        }else{
+            setSearchType(kakao.maps.services.SortBy.DISTANCE)
+        }
+    }
 
     //검색어 입력 change 콜백
     const onSearchTextChange = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -84,8 +100,7 @@ export function SearchComponent() {
         places.keywordSearch(searchText, SearchCallback, {
             location: mapContext.mapElement?.getCenter(),   //현재 지도의 Center를 지정합니다.
             category_group_code: "FD6",                     //카테고리그룹을 음식점으로 지정합니다.
-            // sort: kakao.maps.services.SortBy.DISTANCE,      //center와 제일 가까운 순으로 정렬합니다.
-            sort: kakao.maps.services.SortBy.ACCURACY,      //정확도 순으로 정렬합니다.
+            sort: searchType,                               //선택한 정확도 / 가까운 순에 따라 검색합니다.
             size: MAX_DISPLAYED_SEARCHRESULT                //한 페이지에 몇개의 결과를 띄울 것인지 선택합니다. (기본 15)
         })    
     }
@@ -179,7 +194,6 @@ export function SearchComponent() {
                                             <div
                                                 className={styles.Url}
                                             >
-                                                {/* {element.place_url} */}
                                                 <button
                                                     onClick={() => window.open(`${element.place_url}`, "_blank")}
                                                 >
@@ -216,6 +230,27 @@ export function SearchComponent() {
     return (
         <div>         
             <h1>검색</h1>
+            <div className={styles.SearchTypeContainer}>
+                <label>
+                    <input
+                        type='radio'
+                        name='SearchType'
+                        value={kakao.maps.services.SortBy.ACCURACY}                        
+                        onChange={onRadioChange}
+                        defaultChecked
+                    />
+                    정확도 순
+                </label>
+                <label>
+                    <input
+                        type='radio'
+                        name='SearchType'
+                        value={kakao.maps.services.SortBy.DISTANCE}
+                        onChange={onRadioChange}
+                    />
+                    가까운 순
+                </label>
+            </div>
             <input value={searchText} onChange={onSearchTextChange} onFocus={onSearchTextFocus}/>
             <button onClick={onSearchButtonClick}>검색</button>
             <div className={styles.SearchResultContainer}>

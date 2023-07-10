@@ -1,13 +1,13 @@
 @charset "UTF-8";
 
 @font-face {
-    font-family: "SpoqaHanSansNeo_Bold";
-    src: url("../../public/SpoqaHanSansNeo-Bold.ttf") format("truetype");
+    font-family: 'SpoqaHanSansNeo_Bold';
+    src: url('../../public/SpoqaHanSansNeo-Bold.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: "SpoqaHanSansNeo";
-    src: url("../../public/SpoqaHanSansNeo-Regular.ttf") format("truetype");
+    font-family: 'SpoqaHanSansNeo';
+    src: url('../../public/SpoqaHanSansNeo-Regular.ttf') format('truetype');
 }
 
 .SearchTypeContainer {
@@ -15,23 +15,23 @@
         margin-bottom: 5px;
     }
 
-    .SelectButton input[type="radio"] {
+    .SelectButton input[type='radio'] {
         display: none;
     }
 
-    .SelectButton input[type="radio"] + label {
+    .SelectButton input[type='radio'] + label {
         border: 1px solid black;
         border-radius: 7px;
         margin: 2px;
         padding: 5px;
     }
 
-    .SelectButton input[type="radio"] + label {
+    .SelectButton input[type='radio'] + label {
         background-color: white;
         color: black;
     }
 
-    .SelectButton input[type="radio"]:checked + label {
+    .SelectButton input[type='radio']:checked + label {
         background-color: gray;
         color: white;
     }
@@ -42,7 +42,7 @@
     overflow: auto;
 
     .SearchList {
-        font-family: "SpoqaHanSansNeo";
+        font-family: 'SpoqaHanSansNeo';
         padding-inline-start: 10px;
         .SearchCard {
             list-style: none;
@@ -53,7 +53,7 @@
                 font-size: large;
                 .PlaceName {
                     color: #ff6347;
-                    font-family: "SpoqaHanSansNeo_Bold";
+                    font-family: 'SpoqaHanSansNeo_Bold';
                 }
                 .GoToMap {
                 }

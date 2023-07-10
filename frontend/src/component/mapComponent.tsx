@@ -7,6 +7,11 @@ import { MARKER_TYPE, MarkerComponent } from '../component/markerComponent'
 //https://www.npmjs.com/package/@types/kakaomaps
 //https://apis.map.kakao.com/web/
 
+/**
+ * ToDo
+ * "지도로 이동" 마커 정보 출력
+ */
+
 //state 인터페이스
 interface State {
     currentLocation?: {
@@ -29,7 +34,6 @@ interface Marker {
     lat: number
     /** Longitude */
     lng: number
-
     /** ImagePath */
     img: string
 }
@@ -42,7 +46,7 @@ const TEMPORARY_MARKER_ARRAY: Marker[] = [
         star: 4.0,
         lat: 37.52881156943704,
         lng: 126.83914457889723,
-        img: '',
+        img: '/test_pic.png',
     },
     {
         name: 'ALLPUB',
@@ -88,30 +92,29 @@ export function MapComponent() {
             return new kakao.maps.CustomOverlay({
                 map: map,
                 position: position,
-                content: `<div class='${styles.markerContainer}'>
+                content: `<div class='${styles.markerBubbleContainer}'>
                             <div class='${styles.markerBubble}'>        
                                 <div class='${styles.titleBox}'>   
                                     <div class='${styles.iconBox}'>                            
-                                        <div class='${styles.img}'>    
+                                        <div class='${styles.img}'>   
                                         </div>                                  
                                     </div>                                         
                                     <div class='${styles.restaurantName}'>  
                                         ${marker.name}       
                                     </div>               
-                                    <div class='${styles.starRate}'>                                           
-                                        <div>                          
-                                            <div class='${styles.img}'>    
-                                            </div>                                      
-                                            <div>    
-                                                ${marker.star}    
-                                            </div>  
+                                    <div class='${styles.starRateBox}'>        
+                                        <div class='${styles.starImg}'>    
                                         </div>       
+                                        <div class='${styles.starRate}'>    
+                                            ${marker.star}    
+                                        </div>    
                                     </div>     
                                 </div> 
                                 <div class='${styles.contentBox}'>    
                                     <div class='${styles.imageBox}'>    
                                         <div
                                             class='${styles.img}' 
+                                            style='background-image:url(${marker.img})'                                            
                                         > 
                                                
                                         </div>                          

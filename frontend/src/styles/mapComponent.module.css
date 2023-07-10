@@ -1,27 +1,24 @@
 @charset "UTF-8";
 
 @font-face {
-    font-family: "SpoqaHanSansNeo_Bold";
-    src: url("../../public/SpoqaHanSansNeo-Bold.ttf") format("truetype");
+    font-family: 'SpoqaHanSansNeo_Bold';
+    src: url('../../public/SpoqaHanSansNeo-Bold.ttf') format('truetype');
 }
 
 .title {
     font-size: 20px;
     font-weight: bold;
-    font-family: "SpoqaHanSansNeo_Bold";
+    font-family: 'SpoqaHanSansNeo_Bold';
 }
 
-.markerContainer {
+.markerBubbleContainer {
     position: absolute;
     transform: translateX(-50%) translateY(-100%);
-    font-family: "SpoqaHanSansNeo_Bold";
-    /* 말풍선 화살표 (container와 살짝 겹쳐서 말풍선이 위치한 쪽의 테두리를 덮어서 안보이게 함) */
-    /* 말풍선 화살표테두리 (after 삼각형보다 약간 더 큰 화살표를 만들어서 밑에 깜) */
+    font-family: 'SpoqaHanSansNeo_Bold';
     .markerBubble {
         background: #fff;
         margin-bottom: 8px;
         align-items: center;
-        /* padding: 3px; */
         width: 160px;
         height: 80px;
         border-radius: 10px;
@@ -40,7 +37,7 @@
                 justify-content: center;
                 align-items: center;
                 .img {
-                    background-image: url("../../public/iconmonstr-eat-3-white.svg");
+                    background-image: url('../../public/iconmonstr-eat-3-white.svg');
                     background-repeat: no-repeat;
                     background-position: center;
                     background-size: contain;
@@ -48,21 +45,23 @@
                     height: 80%;
                 }
             }
-            .starRate {
+            .starRateBox {
                 width: 10%;
-                font-size: 12px;
-                color: #fff;
                 line-height: 13px;
                 padding-right: 5px;
                 display: flex;
                 flex-direction: column;
-                .img {
-                    background-image: url("../../public/star.svg");
+                .starImg {
+                    background-image: url('../../public/star.svg');
                     background-repeat: no-repeat;
                     background-position: center;
                     background-size: contain;
                     width: 100%;
                     height: 100%;
+                }
+                .starRate {
+                    font-size: 12px;
+                    color: #fff;
                 }
             }
             .restaurantName {
@@ -86,15 +85,11 @@
                 justify-content: center;
                 align-items: center;
                 .img {
-                    /* background-image: url('../../public/iconmonstr-picture-thin.svg'); */
                     background-repeat: no-repeat;
                     background-position: center;
                     background-size: contain;
                     width: 80%;
                     height: 80%;
-                }
-                img {
-                    width: 70%;
                 }
             }
             .infoBox {
@@ -107,8 +102,9 @@
             }
         }
     }
+    /* 말풍선 화살표 (container와 살짝 겹쳐서 말풍선이 위치한 쪽의 테두리를 덮어서 안보이게 함) */
     .markerBubble:after {
-        content: "";
+        content: '';
         position: absolute;
         bottom: -10px;
         left: 50%;
@@ -118,8 +114,9 @@
         display: block;
         border-color: #fff transparent transparent transparent;
     }
+    /* 말풍선 화살표테두리 (after 삼각형보다 약간 더 큰 화살표를 밑에 깔아서 테두리처럼 보이게 함) */
     .markerBubble:before {
-        content: "";
+        content: '';
         position: absolute;
         border-style: solid;
         display: block;
@@ -151,11 +148,11 @@
     right: 10px;
     bottom: 50px;
     z-index: 100;
-    font-family: "SpoqaHanSansNeo_Bold";
+    font-family: 'SpoqaHanSansNeo_Bold';
     display: flex;
     flex-direction: column;
     .locationButtonImage {
-        background-image: url("../../public/iconmonstr-crosshair-9.svg");
+        background-image: url('../../public/iconmonstr-crosshair-9.svg');
         background-repeat: no-repeat;
         background-position: top;
         background-size: 80%;

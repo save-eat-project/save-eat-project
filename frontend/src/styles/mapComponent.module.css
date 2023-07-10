@@ -32,7 +32,7 @@
             height: 35%;
             width: 100%;
             border-radius: 8px 8px 0 0;
-            background-color: #FF6347;
+            background-color: #ff6347;
             display: flex;
             .iconBox {
                 width: 20%;
@@ -133,7 +133,7 @@
 }
 
 .mapContainer {
-    position: relative;    
+    position: relative;
     .kakaoMap {
         height: 600px;
     }
@@ -153,7 +153,7 @@
     z-index: 100;
     font-family: "SpoqaHanSansNeo_Bold";
     display: flex;
-    flex-direction: column;            
+    flex-direction: column;
     .locationButtonImage {
         background-image: url("../../public/iconmonstr-crosshair-9.svg");
         background-repeat: no-repeat;

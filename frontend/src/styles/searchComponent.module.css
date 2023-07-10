@@ -10,67 +10,82 @@
     src: url("../../public/SpoqaHanSansNeo-Regular.ttf") format("truetype");
 }
 
-.SearchTypeContainer{
-    input[type=radio] { display:none;  }     
+.SearchTypeContainer {
+    .SelectButton {
+        margin-bottom: 5px;
+    }
+
+    .SelectButton input[type="radio"] {
+        display: none;
+    }
+
+    .SelectButton input[type="radio"] + label {
+        border: 1px solid black;
+        border-radius: 7px;
+        margin: 2px;
+        padding: 5px;
+    }
+
+    .SelectButton input[type="radio"] + label {
+        background-color: white;
+        color: black;
+    }
+
+    .SelectButton input[type="radio"]:checked + label {
+        background-color: gray;
+        color: white;
+    }
 }
 
-.SearchResultContainer{
+.SearchResultContainer {
     height: 200px;
     overflow: auto;
-    
-    .SearchList{
+
+    .SearchList {
         font-family: "SpoqaHanSansNeo";
         padding-inline-start: 10px;
-        .SearchCard{
+        .SearchCard {
             list-style: none;
             border: 1px solid gray;
             border-bottom: none;
-            .Top{
+            .Top {
                 display: flex;
                 font-size: large;
-                .PlaceName{
-                    color: #FF6347;
+                .PlaceName {
+                    color: #ff6347;
                     font-family: "SpoqaHanSansNeo_Bold";
                 }
-                .GoToMap{
-                    
+                .GoToMap {
                 }
             }
-            .Content{
+            .Content {
                 display: flex;
                 flex-direction: column;
-                .Category{
+                .Category {
                     color: #666;
                 }
-                .Address{
-
+                .Address {
                 }
-                .Url{
-
+                .Url {
                 }
-                .Phone{
-
+                .Phone {
                 }
-                .Button{
-
+                .Button {
                 }
             }
         }
-        .SearchCard:nth-last-of-type(1){
+        .SearchCard:nth-last-of-type(1) {
             border: 1px solid gray;
         }
-        .Page{            
+        .Page {
             display: flex;
-            align-items: center;          
+            align-items: center;
 
-            .LeftButton{
-                
+            .LeftButton {
             }
-            .PageNumber{
-
+            .PageNumber {
             }
-            .RightButton{
-
+            .RightButton {
             }
         }
     }

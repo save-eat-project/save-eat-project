@@ -12,8 +12,12 @@
 
 .mapContainer {
     position: relative;
+    padding: 10px;
+
+
     .kakaoMap {
-        height: 600px;
+        border: 1px solid gray;
+        height: 250px;
     }
 }
 
@@ -26,19 +30,19 @@
         display: none;
     }
 
-    .SelectButton input[type='radio'] + label {
+    .SelectButton input[type='radio']+label {
         border: 1px solid black;
         border-radius: 7px;
         margin: 2px;
         padding: 5px;
     }
 
-    .SelectButton input[type='radio'] + label {
+    .SelectButton input[type='radio']+label {
         background-color: white;
         color: black;
     }
 
-    .SelectButton input[type='radio']:checked + label {
+    .SelectButton input[type='radio']:checked+label {
         background-color: gray;
         color: white;
     }
@@ -46,54 +50,90 @@
 
 .SearchResultContainer {
     height: 200px;
-    overflow: auto;
+    overflow-y: scroll;
+    margin-right: 10px;
 
     .SearchList {
         font-family: 'SpoqaHanSansNeo';
         padding-inline-start: 10px;
+
         .SearchCard {
             list-style: none;
             border: 1px solid gray;
             border-bottom: none;
+            padding: 5px;
+
             .Top {
                 display: flex;
                 font-size: large;
+
                 .PlaceName {
+                    width: 60%;
                     color: #ff6347;
                     font-family: 'SpoqaHanSansNeo_Bold';
                 }
-                .GoToMap {
+
+                .Buttons {
+                    width: 40%;
+                    display: flex;
+                    justify-content: flex-end;
+
+                    button {
+                        background-color: #fff;
+                        /* border: 1px solid black; */
+                        border: transparent;
+                        border-radius: 5px;
+                        font-family: 'SpoqaHanSansNeo';
+                        margin-left: 5px;
+                    }
+
+                    .Url {
+                        background-image: url('../../public/kakao_map_logo.svg');
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        background-size: 100%;
+                        width: 20%;
+                    }
                 }
             }
+
             .Content {
                 display: flex;
                 flex-direction: column;
+
                 .Category {
                     color: #666;
                 }
-                .Address {
-                }
-                .Url {
-                }
-                .Phone {
-                }
-                .Button {
-                }
             }
         }
+
         .SearchCard:nth-last-of-type(1) {
             border: 1px solid gray;
         }
+
         .Page {
             display: flex;
             align-items: center;
 
-            .LeftButton {
-            }
-            .PageNumber {
-            }
-            .RightButton {
-            }
+            .LeftButton {}
+
+            .PageNumber {}
+
+            .RightButton {}
         }
     }
+}
+
+.SearchResultContainer::-webkit-scrollbar {
+    width: 10px;
+}
+
+.SearchResultContainer::-webkit-scrollbar-track {
+    background: white;
+}
+
+.SearchResultContainer::-webkit-scrollbar-thumb {
+    background: #ff6347;
+    border-radius: 10px;
+    height: 20%;
 }

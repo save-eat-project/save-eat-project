@@ -10,6 +10,7 @@ import { LeftOutlined, RightOutlined, SearchOutlined } from '@ant-design/icons'
  * Todo
  *
  * 커스텀 컴포넌트 접기 / 펼치기기능 넣기?
+ * "지도로 이동" 마커 정보 출력
  *
  */
 
@@ -213,10 +214,19 @@ export function SearchComponent() {
                                 <div className={styles.PlaceName}>
                                     {element.place_name}
                                 </div>
-                                <div className={styles.GoToMap}>
+                                <div className={styles.Buttons}>
                                     <button onClick={onSelectButtonClick}>
-                                        지도로 이동
+                                        지도로 보기
                                     </button>
+                                    <button
+                                        className={styles.Url}
+                                        onClick={() =>
+                                            window.open(
+                                                `${element.place_url}`,
+                                                '_blank',
+                                            )
+                                        }
+                                    />
                                 </div>
                             </div>
                             <div className={styles.Content}>
@@ -235,18 +245,6 @@ export function SearchComponent() {
                                         (element.phone === ''
                                             ? '등록되지 않음'
                                             : element.phone)}
-                                </div>
-                                <div className={styles.Url}>
-                                    <button
-                                        onClick={() =>
-                                            window.open(
-                                                `${element.place_url}`,
-                                                '_blank',
-                                            )
-                                        }
-                                    >
-                                        자세히
-                                    </button>
                                 </div>
                                 <div></div>
                             </div>

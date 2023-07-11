@@ -6,10 +6,8 @@ import { MARKER_TYPE, MarkerComponent } from '../component/markerComponent'
 //https://www.npmjs.com/package/@types/kakaomaps
 //https://apis.map.kakao.com/web/
 
-/**
- * ToDo
- * "지도로 이동" 마커 정보 출력
- */
+//prettier 설치
+//https://velog.io/@dum6894/%EA%B0%9C%EB%B0%9C%ED%99%98%EA%B2%BD-vscode-prettier-%EC%84%A4%EC%B9%98-%EB%B0%8F-%EC%82%AC%EC%9A%A9%EB%B2%95
 
 //state 인터페이스
 interface State {

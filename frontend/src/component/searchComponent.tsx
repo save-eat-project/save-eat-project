@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
 import styles from '@styles/searchComponent.module.css'
-import kakaoMapContext from '../hook/kakaoMapContext'
 import { MARKER_TYPE, MarkerComponent } from '../component/markerComponent'
 import { LeftOutlined, RightOutlined, SearchOutlined } from '@ant-design/icons'
 
@@ -37,17 +36,37 @@ interface State {
 
     //검색 라디오버튼 구분용
     searchType: kakao.maps.services.SortBy
+
+    kakaoMap?: kakao.maps.Map
 }
 
 export function SearchComponent() {
-    const mapContext = useContext(kakaoMapContext)
     const [state, setState] = useState<State>({
         currentLocation: undefined,
         search: undefined,
         markerPosition: undefined,
         searchText: '',
         searchType: kakao.maps.services.SortBy.ACCURACY,
+        kakaoMap: undefined,
     })
+
+    useEffect(() => {
+        let container = document.getElementById('map')
+        if (!container) return
+
+        let map = new kakao.maps.Map(container, {
+            //지도의 중심좌표.
+            center: new kakao.maps.LatLng(37.511337, 127.012084),
+
+            //지도의 레벨(확대, 축소 정도)
+            level: 8,
+        })
+
+        setState({
+            ...state,
+            kakaoMap: map,
+        })
+    }, [])
 
     const onRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         var searchType = kakao.maps.services.SortBy.ACCURACY
@@ -113,7 +132,7 @@ export function SearchComponent() {
         var places = new kakao.maps.services.Places(undefined!)
 
         places.keywordSearch(state.searchText, SearchCallback, {
-            location: mapContext.mapElement?.getCenter(), //현재 지도의 Center를 지정합니다.
+            location: state.kakaoMap?.getCenter(), //현재 지도의 Center를 지정합니다.
             category_group_code: 'FD6', //카테고리그룹을 음식점으로 지정합니다.
             sort: state.searchType, //선택한 정확도 / 가까운 순에 따라 검색합니다.
             size: MAX_DISPLAYED_SEARCHRESULT, //한 페이지에 몇개의 결과를 띄울 것인지 선택합니다. (기본 15)
@@ -174,14 +193,13 @@ export function SearchComponent() {
                 {jsonObject.map((element: any, index: number) => {
                     //지도로 이동 버튼 클릭
                     const onSelectButtonClick = () => {
-                        const kakaoMap = mapContext.mapElement
                         const { x: lng, y: lat } = element
 
-                        if (!kakaoMap) return
+                        if (!state.kakaoMap) return
 
                         //마커가 지도 중앙에 보이도록 이동합니다.
                         const latlng = new kakao.maps.LatLng(lat, lng)
-                        kakaoMap.setCenter(latlng)
+                        state.kakaoMap.setCenter(latlng)
 
                         //MarkerComponent를 호출하기 위해 state를 set합니다.
                         setState({
@@ -304,8 +322,12 @@ export function SearchComponent() {
                 <MarkerComponent
                     position={state.markerPosition}
                     markerType={MARKER_TYPE.SEARCH}
+                    kakaoMap={state.kakaoMap!}
                 />
             ) : null}
+            <div className={styles.mapContainer}>
+                <div id="map" className={styles.kakaoMap}></div>
+            </div>
         </div>
     )
 }

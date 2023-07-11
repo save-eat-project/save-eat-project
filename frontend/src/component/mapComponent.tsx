@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
 import styles from '@styles/mapComponent.module.css'
 import useGeolocation from '../hook/useGeolocation'
-import kakaoMapContext from '../hook/kakaoMapContext'
 import { MARKER_TYPE, MarkerComponent } from '../component/markerComponent'
 
 //https://www.npmjs.com/package/@types/kakaomaps
@@ -67,7 +66,6 @@ const TEMPORARY_MARKER_ARRAY: Marker[] = [
 ]
 
 export function MapComponent() {
-    var mapContext = useContext(kakaoMapContext)
     const [state, setState] = useState<State>({})
     const location = useGeolocation()
 
@@ -146,8 +144,6 @@ export function MapComponent() {
         //         // }]
         //     }
         // )
-
-        mapContext.setMapElement(map)
 
         setState({
             ...state,
@@ -229,6 +225,7 @@ export function MapComponent() {
                     <MarkerComponent
                         position={state.markerPosition}
                         markerType={MARKER_TYPE.MYLOCATION}
+                        kakaoMap={state.kakaoMap!}
                     />
                 ) : null}
             </div>

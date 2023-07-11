@@ -12,20 +12,16 @@ export enum MARKER_TYPE {
 interface MarkerProps {
     position: [number, number]
     markerType: MARKER_TYPE
+    kakaoMap: kakao.maps.Map
 }
 
 export function MarkerComponent(props: MarkerProps) {
-    const mapContext = useContext(kakaoMapContext)
-    const [searchMarker] = useState(() => new kakao.maps.Marker())
-    const [locationMarker] = useState(() => new kakao.maps.Marker())
-    const map = mapContext.mapElement
+    const [marker] = useState(() => new kakao.maps.Marker())
 
     useEffect(() => {
-        searchMarker.setMap(map)
-        locationMarker.setMap(map)
+        marker.setMap(props.kakaoMap)
         return () => {
-            searchMarker.setMap(null)
-            locationMarker.setMap(null)
+            marker.setMap(null)
         }
     }, [])
 
@@ -36,10 +32,10 @@ export function MarkerComponent(props: MarkerProps) {
             var imageSrc = './NewCurrentPoint_Red.svg'
             var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize)
 
-            locationMarker.setImage(markerImage)
-            locationMarker.setPosition(new kakao.maps.LatLng(...props.position))
+            marker.setImage(markerImage)
+            marker.setPosition(new kakao.maps.LatLng(...props.position))
         } else if (props.markerType == MARKER_TYPE.SEARCH) {
-            searchMarker.setPosition(new kakao.maps.LatLng(...props.position))
+            marker.setPosition(new kakao.maps.LatLng(...props.position))
         }
     }, [props])
 

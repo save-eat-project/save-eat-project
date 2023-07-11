@@ -10,6 +10,13 @@
     src: url('../../public/SpoqaHanSansNeo-Regular.ttf') format('truetype');
 }
 
+.mapContainer {
+    position: relative;
+    .kakaoMap {
+        height: 600px;
+    }
+}
+
 .SearchTypeContainer {
     .SelectButton {
         margin-bottom: 5px;

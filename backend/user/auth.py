@@ -1,3 +1,4 @@
+from typing import Any
 from rest_framework import serializers
 from rest_framework.exceptions import AuthenticationFailed
 
@@ -10,43 +11,51 @@ from google.auth.exceptions import GoogleAuthError
 
 from .settings import GOOGLE_OAUTH_CLIENT_ID
 from .typing import OAuthDataDict
-from .models import User
+from .models import OAuth, User
 
 
-class OAuthSerializer(serializers.Serializer):
-    provider = serializers.CharField()
-    auth_id = serializers.CharField()
-
-    name = serializers.CharField()
-    avatar_url = serializers.URLField(required=False)
-    email = serializers.EmailField(required=False)
-
-    validated_data: OAuthDataDict
 
 
-def create_token(user: User):
-    _, token = AuthToken.objects.create(user)
-    return token
+class OAuthLoginSerializer(serializers.Serializer):
+    token = serializers.CharField()
+
+    def create(self, oauth_data: OAuthDataDict) -> str:
+        try:
+            oauth = OAuth.objects.select_related('user').get(
+                auth_id=oauth_data['auth_id'],
+                provider=oauth_data['provider'],
+            )
+            user = oauth.user
+
+        except OAuth.DoesNotExist:
+            user = User.objects.create_oauth_user(**oauth_data)
+
+        _, token = AuthToken.objects.create(user)
+        
+        return token
+
+    def to_representation(self, token: str) -> Any:
+        return {
+            'token': token
+        }
 
 
-def verify_google_oauth(token: str):
-    request = google.auth.transport.requests.Request()
-    try:
-        parsed: dict = google_oauth.verify_oauth2_token(
-            token, request, GOOGLE_OAUTH_CLIENT_ID
-        )
-    except GoogleAuthError:
-        raise AuthenticationFailed()
+class GoogleLoginSerializer(OAuthLoginSerializer):
 
-    serializer = OAuthSerializer(
-        data=OAuthDataDict(
+    def validate(self, attrs: dict) -> Any:
+        request = google.auth.transport.requests.Request()
+        try:
+            parsed: dict = google_oauth.verify_oauth2_token(
+                attrs['token'], request, GOOGLE_OAUTH_CLIENT_ID
+            )
+        except GoogleAuthError:
+            raise AuthenticationFailed()
+
+        return OAuthDataDict(
             provider='google',
             auth_id=parsed['sub'],
             name=parsed['name'],
             avatar_url=parsed['picture'],
             email=parsed['email'] if parsed['email_verified'] else None
         )
-    )
-    serializer.is_valid(raise_exception=True)
 
-    return serializer.validated_data

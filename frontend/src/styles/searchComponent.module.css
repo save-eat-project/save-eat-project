@@ -14,53 +14,29 @@
     position: relative;
     padding: 10px;
 
-
     .kakaoMap {
         border: 1px solid gray;
         height: 250px;
     }
 }
-
-.SearchTypeContainer {
-    .SelectButton {
-        margin-bottom: 5px;
-    }
-
-    .SelectButton input[type='radio'] {
-        display: none;
-    }
-
-    .SelectButton input[type='radio']+label {
-        border: 1px solid black;
-        border-radius: 7px;
-        margin: 2px;
-        padding: 5px;
-    }
-
-    .SelectButton input[type='radio']+label {
-        background-color: white;
-        color: black;
-    }
-
-    .SelectButton input[type='radio']:checked+label {
-        background-color: gray;
-        color: white;
-    }
+.SearchTextContainer{
+    margin-left: 10px;
 }
 
 .SearchResultContainer {
     height: 200px;
     overflow-y: scroll;
-    margin-right: 10px;
+    margin: 10px;
+    border: 1px solid gray;
 
     .SearchList {
         font-family: 'SpoqaHanSansNeo';
         padding-inline-start: 10px;
+        margin: 0;
 
         .SearchCard {
             list-style: none;
-            border: 1px solid gray;
-            border-bottom: none;
+            border-bottom: 1px solid gray;
             padding: 5px;
 
             .Top {
@@ -77,23 +53,32 @@
                     width: 40%;
                     display: flex;
                     justify-content: flex-end;
+                    align-items: center;
 
                     button {
                         background-color: #fff;
-                        /* border: 1px solid black; */
                         border: transparent;
                         border-radius: 5px;
                         font-family: 'SpoqaHanSansNeo';
                         margin-left: 5px;
                     }
 
+                    .DivideLine{
+                        border-right: 1px solid gray;                        
+                        padding-top: 4%;
+                        padding-bottom: 4%;
+                        margin-left: 5px;
+                        margin-right: 5px;
+                    }
+
                     .Url {
                         background-image: url('../../public/kakao_map_logo.svg');
                         background-repeat: no-repeat;
                         background-position: center;
-                        background-size: 100%;
-                        width: 20%;
+                        background-size: 110%;
+                        padding: 5%;
                     }
+                    
                 }
             }
 
@@ -108,18 +93,14 @@
         }
 
         .SearchCard:nth-last-of-type(1) {
-            border: 1px solid gray;
+            border-bottom: none;
         }
 
         .Page {
             display: flex;
+            justify-content: center;
             align-items: center;
-
-            .LeftButton {}
-
-            .PageNumber {}
-
-            .RightButton {}
+            font-family: 'SpoqaHanSansNeo_Bold';
         }
     }
 }

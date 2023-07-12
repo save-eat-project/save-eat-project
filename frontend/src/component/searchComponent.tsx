@@ -1,7 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react'
 import styles from '@styles/searchComponent.module.css'
 import { MARKER_TYPE, MarkerComponent } from '../component/markerComponent'
-import { LeftOutlined, RightOutlined, SearchOutlined } from '@ant-design/icons'
+import {
+    LeftOutlined,
+    RightOutlined,
+    SearchOutlined,
+    AudioOutlined,
+} from '@ant-design/icons'
+import { Input } from 'antd'
 
 //https://www.npmjs.com/package/@types/kakaomaps
 //https://apis.map.kakao.com/web/
@@ -32,22 +38,16 @@ interface State {
     //검색결과 지도로 이동 시 사용할 마커의 위도좌도 좌표
     markerPosition?: [number, number]
 
-    //검색어 보관용
-    searchText: string
-
-    //검색 라디오버튼 구분용
-    searchType: kakao.maps.services.SortBy
-
     kakaoMap?: kakao.maps.Map
 }
 
 export function SearchComponent() {
+    const { Search } = Input
+
     const [state, setState] = useState<State>({
         currentLocation: undefined,
         search: undefined,
         markerPosition: undefined,
-        searchText: '',
-        searchType: kakao.maps.services.SortBy.ACCURACY,
         kakaoMap: undefined,
     })
 
@@ -69,34 +69,9 @@ export function SearchComponent() {
         })
     }, [])
 
-    const onRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        var searchType = kakao.maps.services.SortBy.ACCURACY
-
-        if (e.target.value === kakao.maps.services.SortBy.DISTANCE.toString()) {
-            searchType = kakao.maps.services.SortBy.DISTANCE
-        }
-
-        //검색 타입 다른걸로 변경하면 검색 결과 초기화
-        setState({
-            ...state,
-            search: undefined,
-            searchType: searchType,
-        })
-    }
-
-    //검색어 입력 change 콜백
-    const onSearchTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        //searchText state에 현재 입력된 검색어를 보관합니다.
-        //이후에 검색버튼을 눌렀을 때 getElementByID와 같은 검색메서드를 사용하지 않기 위함입니다.
-        setState({
-            ...state,
-            searchText: e.target.value,
-        })
-    }
-
-    //검색버튼 클릭
-    const onSearchButtonClick = () => {
-        if (state.searchText === '') return
+    const onSearchButtonClick = (value: string) => {
+        console.log(value)
+        if (value === '') return
 
         //장소검색 콜백
         var SearchCallback = function (
@@ -132,22 +107,12 @@ export function SearchComponent() {
 
         var places = new kakao.maps.services.Places(undefined!)
 
-        places.keywordSearch(state.searchText, SearchCallback, {
+        places.keywordSearch(value, SearchCallback, {
             location: state.kakaoMap?.getCenter(), //현재 지도의 Center를 지정합니다.
             category_group_code: 'FD6', //카테고리그룹을 음식점으로 지정합니다.
-            sort: state.searchType, //선택한 정확도 / 가까운 순에 따라 검색합니다.
+            sort: kakao.maps.services.SortBy.ACCURACY, //정확한 결과로 검색합니다.
             size: MAX_DISPLAYED_SEARCHRESULT, //한 페이지에 몇개의 결과를 띄울 것인지 선택합니다. (기본 15)
         })
-    }
-
-    //검색 텍스트박스 클릭시 검색결과 초기화
-    //->검색결과 출력 함수 계속 렌더링 될 때마다 호출돼서 추가.
-    const onSearchTextFocus = () => {
-        //검색 결과 초기화
-        // setState({
-        //     ...state,
-        //     search:undefined
-        // })
     }
 
     //검색결과 페이지 이전버튼 클릭
@@ -160,15 +125,9 @@ export function SearchComponent() {
         state.search?.pagination.nextPage()
     }
 
-    const onSearchTextKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter') {
-            onSearchButtonClick()
-        }
-    }
-
     //검색결과 출력함수
     function SearchResultReturn() {
-        if (!state.search) return
+        if (!state.search) return <div>검색 결과가 없습니다.</div>
 
         const jsonString = JSON.stringify(state.search.result)
         const jsonObject = JSON.parse(jsonString)
@@ -178,10 +137,6 @@ export function SearchComponent() {
         const maxPage = Math.ceil(
             state.search.pagination.totalCount / MAX_DISPLAYED_SEARCHRESULT,
         )
-
-        if (state.searchText === '') {
-            return <div>검색어를 입력해주세요.</div>
-        }
 
         if (maxPage === 0) {
             return <div>검색 결과가 없습니다.</div>
@@ -201,6 +156,7 @@ export function SearchComponent() {
                         //마커가 지도 중앙에 보이도록 이동합니다.
                         const latlng = new kakao.maps.LatLng(lat, lng)
                         state.kakaoMap.setCenter(latlng)
+                        state.kakaoMap.setLevel(2)
 
                         //MarkerComponent를 호출하기 위해 state를 set합니다.
                         setState({
@@ -209,15 +165,20 @@ export function SearchComponent() {
                         })
                     }
                     return (
-                        <li className={styles.SearchCard} key={index}>
+                        <li
+                            className={styles.SearchCard}
+                            key={index}
+                            onClick={onSelectButtonClick}
+                        >
                             <div className={styles.Top}>
                                 <div className={styles.PlaceName}>
                                     {element.place_name}
                                 </div>
                                 <div className={styles.Buttons}>
-                                    <button onClick={onSelectButtonClick}>
-                                        지도로 보기
-                                    </button>
+                                    <button>선택</button>
+
+                                    <div className={styles.DivideLine} />
+
                                     <button
                                         className={styles.Url}
                                         onClick={() =>
@@ -231,14 +192,13 @@ export function SearchComponent() {
                             </div>
                             <div className={styles.Content}>
                                 <div className={styles.Category}>
-                                    {'카테고리 : ' +
-                                        element.category_name.replace(
-                                            '음식점 > ',
-                                            '',
-                                        )}
+                                    {element.category_name.replace(
+                                        '음식점 > ',
+                                        '',
+                                    )}
                                 </div>
                                 <div className={styles.Address}>
-                                    {'주소 : ' + element.road_address_name}
+                                    {element.road_address_name}
                                 </div>
                                 <div className={styles.Phone}>
                                     {'전화번호 : ' +
@@ -246,7 +206,6 @@ export function SearchComponent() {
                                             ? '등록되지 않음'
                                             : element.phone)}
                                 </div>
-                                <div></div>
                             </div>
                         </li>
                     )
@@ -276,42 +235,14 @@ export function SearchComponent() {
 
     return (
         <div>
-            <h1>검색</h1>
-            <div className={styles.SearchTypeContainer}>
-                <div className={styles.SelectButton}>
-                    <input
-                        type="radio"
-                        name="SearchType"
-                        id={kakao.maps.services.SortBy.ACCURACY}
-                        value={kakao.maps.services.SortBy.ACCURACY}
-                        onChange={onRadioChange}
-                        defaultChecked
-                    />
-                    <label htmlFor={kakao.maps.services.SortBy.ACCURACY}>
-                        정확도 순
-                    </label>
-
-                    <input
-                        type="radio"
-                        name="SearchType"
-                        id={kakao.maps.services.SortBy.DISTANCE}
-                        value={kakao.maps.services.SortBy.DISTANCE}
-                        onChange={onRadioChange}
-                    />
-                    <label htmlFor={kakao.maps.services.SortBy.DISTANCE}>
-                        가까운 순
-                    </label>
-                </div>
+            <h1>가게 정보</h1>
+            <div className={styles.SearchTextContainer}>
+                <Search
+                    placeholder="input search text"
+                    onSearch={onSearchButtonClick}
+                    style={{ width: 200 }}
+                />
             </div>
-            <input
-                value={state.searchText}
-                onChange={onSearchTextChange}
-                onFocus={onSearchTextFocus}
-                onKeyDown={onSearchTextKeyDown}
-            />
-            <button onClick={onSearchButtonClick}>
-                <SearchOutlined />
-            </button>
 
             <div className={styles.SearchResultContainer}>
                 <ul className={styles.SearchList}>{SearchResultReturn()}</ul>
@@ -324,7 +255,7 @@ export function SearchComponent() {
                 />
             ) : null}
             <div className={styles.mapContainer}>
-                <div id="map" className={styles.kakaoMap}></div>
+                <div id="map" className={styles.kakaoMap} />
             </div>
         </div>
     )

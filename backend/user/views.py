@@ -1,5 +1,7 @@
 from typing import cast
 
+from django.contrib.auth.signals import user_logged_in
+
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -30,7 +32,7 @@ class OAuthLoginView(APIView):
             user = User.objects.create_oauth_user(auth)
             
         token = self.create_token(user)
-
+        user_logged_in.send(sender=user.__class__, request=request, user=user)
         return Response({'token': token})
 
 

@@ -1,8 +1,10 @@
 from django.urls import path, include
 
-from . import views
+from .views import GoogleLoginView
+from knox.views import LogoutView, LogoutAllView
 
 urlpatterns = [
-    path('login/google/', views.GoogleLoginView.as_view()),
-    path('logout/', views.LogoutView.as_view())
+    path('login/google/', GoogleLoginView.as_view()),
+    path('logout/', LogoutView.as_view()),
+    path('logout/all/', LogoutAllView.as_view()),
 ]

@@ -7,10 +7,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.exceptions import PermissionDenied
 
+from knox.models import AuthToken
+
 from .typing import OAuthDataDict
 from .models import User
-from .auth import GoogleAuthentication, OAuthAuthentication, AuthToken
-
+from .auth import GoogleAuthentication, OAuthAuthentication
 
 
 class OAuthLoginView(APIView):
@@ -39,8 +40,3 @@ class OAuthLoginView(APIView):
 class GoogleLoginView(OAuthLoginView):
     authentication_classes = (GoogleAuthentication,)
         
-
-class LogoutView(APIView):
-
-    def post(self, request: Request):
-        raise NotImplementedError()

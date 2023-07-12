@@ -1,6 +1,7 @@
 from typing import Any
-from rest_framework import serializers
 from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.authentication import BaseAuthentication, get_authorization_header
+from rest_framework.request import Request
 
 from knox.auth import AuthToken
 
@@ -9,46 +10,54 @@ import google.auth.transport.requests
 from google.auth.exceptions import GoogleAuthError
 
 
+from user.typing import OAuthDataDict
+
+
 from .settings import GOOGLE_OAUTH_CLIENT_ID
 from .typing import OAuthDataDict
-from .models import OAuth, User
+from .models import OAuth
 
 
 
 
-class OAuthLoginSerializer(serializers.Serializer):
-    token = serializers.CharField()
 
-    def create(self, oauth_data: OAuthDataDict) -> str:
+class OAuthAuthentication(BaseAuthentication):
+
+    def verify_token(self, token: str) -> OAuthDataDict:
+        raise NotImplementedError()
+
+    def authenticate(self, request: Request):
+        auth = get_authorization_header(request).split()
+
+        if not auth or auth[0].lower() != b'bearer':
+            return None
+
+        if len(auth) != 2:
+            raise AuthenticationFailed()
+
+        oauth_data = self.verify_token(auth[1].decode())
+        
         try:
             oauth = OAuth.objects.select_related('user').get(
                 auth_id=oauth_data['auth_id'],
                 provider=oauth_data['provider'],
             )
             user = oauth.user
-
         except OAuth.DoesNotExist:
-            user = User.objects.create_oauth_user(**oauth_data)
+            user = None
 
-        _, token = AuthToken.objects.create(user)
-        
-        return token
-
-    def to_representation(self, token: str) -> Any:
-        return {
-            'token': token
-        }
+        return (user, oauth_data)
 
 
-class GoogleLoginSerializer(OAuthLoginSerializer):
+class GoogleAuthentication(OAuthAuthentication):
 
-    def validate(self, attrs: dict) -> Any:
+    def verify_token(self, token: str) -> OAuthDataDict:
         request = google.auth.transport.requests.Request()
         try:
             parsed: dict = google_oauth.verify_oauth2_token(
-                attrs['token'], request, GOOGLE_OAUTH_CLIENT_ID
+                token, request, GOOGLE_OAUTH_CLIENT_ID
             )
-        except GoogleAuthError:
+        except GoogleAuthError as error:
             raise AuthenticationFailed()
 
         return OAuthDataDict(
@@ -58,4 +67,5 @@ class GoogleLoginSerializer(OAuthLoginSerializer):
             avatar_url=parsed['picture'],
             email=parsed['email'] if parsed['email_verified'] else None
         )
+    
 

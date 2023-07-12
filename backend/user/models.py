@@ -3,32 +3,30 @@ from django.db import models, transaction
 from django.contrib.auth.models import AbstractUser, UserManager as BaseUserManager
 from uuid import uuid4
 
+from user.typing import OAuthDataDict
+
 
 class UserManager(BaseUserManager):
 
     @transaction.atomic
     def create_oauth_user(
         self,
-        auth_id: str,
-        provider: str,
-        name: str,
-        email: str | None = None,
-        avatar_url: str | None = None,
+        oauth_data: OAuthDataDict
     ) :
         user = cast(User, self.create_user(
             username=str(uuid4()),
-            email=email,
+            email=oauth_data['email'],
             password=None,
         ))
         OAuth.objects.create(
             user=user,
-            auth_id=auth_id,
-            provider=provider,
+            auth_id=oauth_data['auth_id'],
+            provider=oauth_data['provider'],
         )
         Profile.objects.create(
             user=user,
-            name=name,
-            avatar_url=avatar_url,
+            name=oauth_data['name'],
+            avatar_url=oauth_data['avatar_url'],
         )
 
         return user

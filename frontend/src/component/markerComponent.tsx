@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react'
+import { useEffect, useState, useContext, useMemo } from 'react'
 import kakaoMapContext from '../hook/kakaoMapContext'
 
 //https://www.npmjs.com/package/@types/kakaomaps
@@ -16,7 +16,7 @@ interface MarkerProps {
 }
 
 export function MarkerComponent(props: MarkerProps) {
-    const [marker] = useState(() => new kakao.maps.Marker())
+    const marker = useMemo(() => new kakao.maps.Marker(), [])
 
     useEffect(() => {
         marker.setMap(props.kakaoMap)
@@ -27,7 +27,6 @@ export function MarkerComponent(props: MarkerProps) {
 
     useEffect(() => {
         if (props.markerType == MARKER_TYPE.MYLOCATION) {
-            // 마커 이미지의 이미지 주소입니다
             var imageSize = new kakao.maps.Size(48, 48)
             var imageSrc = './NewCurrentPoint_Red.svg'
             var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize)

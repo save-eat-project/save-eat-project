@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from '@styles/mapComponent.module.css'
 import useGeolocation from '../hook/useGeolocation'
 import { MARKER_TYPE, MarkerComponent } from '../component/markerComponent'
+import { CustomOverlay } from './customOverlay'
 
 //https://www.npmjs.com/package/@types/kakaomaps
 //https://apis.map.kakao.com/web/
@@ -20,7 +21,7 @@ interface State {
 }
 
 //마커 정보 인터페이스
-interface Marker {
+interface customOverlay {
     /** place name */
     name: string
     /** place address */
@@ -36,7 +37,7 @@ interface Marker {
 }
 
 //테스트용 임시 마커 DB
-const TEMPORARY_MARKER_ARRAY: Marker[] = [
+const TEMPORARY_MARKER_ARRAY: customOverlay[] = [
     {
         name: '할매칼국수',
         address: '서울 강서구 월정로 108 해창위너스빌',
@@ -82,47 +83,6 @@ export function MapComponent() {
 
         //zoom레벨 오른쪽아래로 설정(기본 왼쪽아래)
         map.setCopyrightPosition(kakao.maps.CopyrightPosition.BOTTOMRIGHT, true)
-
-        var markers = TEMPORARY_MARKER_ARRAY.map((marker) => {
-            var position = new kakao.maps.LatLng(marker.lat, marker.lng)
-            return new kakao.maps.CustomOverlay({
-                map: map,
-                position: position,
-                content: `<div class='${styles.markerBubbleContainer}'>
-                            <div class='${styles.markerBubble}'>        
-                                <div class='${styles.titleBox}'>   
-                                    <div class='${styles.iconBox}'>                            
-                                        <div class='${styles.img}'>   
-                                        </div>                                  
-                                    </div>                                         
-                                    <div class='${styles.restaurantName}'>  
-                                        ${marker.name}       
-                                    </div>               
-                                    <div class='${styles.starRateBox}'>        
-                                        <div class='${styles.starImg}'>    
-                                        </div>       
-                                        <div class='${styles.starRate}'>    
-                                            ${marker.star}    
-                                        </div>    
-                                    </div>     
-                                </div> 
-                                <div class='${styles.contentBox}'>    
-                                    <div class='${styles.imageBox}'>    
-                                        <div
-                                            class='${styles.img}' 
-                                            style='background-image:url(${marker.img})'                                            
-                                        > 
-                                               
-                                        </div>                          
-                                    </div>                          
-                                    <div class='${styles.infoBox}'>   
-                                        ${marker.address}        
-                                    </div>                          
-                                </div>                                  
-                            </div>
-                        </div>`,
-            })
-        })
 
         //마커 클러스터 테스트코드
         // var clusterer = new kakao.maps.MarkerClusterer(
@@ -227,6 +187,72 @@ export function MapComponent() {
                     />
                 ) : null}
             </div>
+            {TEMPORARY_MARKER_ARRAY.map(
+                (markerInfo: customOverlay, index: number) => {
+                    return (
+                        <CustomOverlay
+                            key={index}
+                            children={
+                                <>
+                                    <div
+                                        className={styles.markerBubbleContainer}
+                                    >
+                                        <div className={styles.markerBubble}>
+                                            <div className={styles.titleBox}>
+                                                <div className={styles.iconBox}>
+                                                    <div
+                                                        className={styles.img}
+                                                    ></div>
+                                                </div>
+                                                <div
+                                                    className={
+                                                        styles.restaurantName
+                                                    }
+                                                >
+                                                    {markerInfo.name}
+                                                </div>
+                                                <div
+                                                    className={
+                                                        styles.starRateBox
+                                                    }
+                                                >
+                                                    <div
+                                                        className={
+                                                            styles.starImg
+                                                        }
+                                                    ></div>
+                                                    <div
+                                                        className={
+                                                            styles.starRate
+                                                        }
+                                                    >
+                                                        {markerInfo.star}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className={styles.contentBox}>
+                                                <div
+                                                    className={styles.imageBox}
+                                                >
+                                                    <div
+                                                        className={styles.img}
+                                                        // style=background-image:url({marker.img})
+                                                    ></div>
+                                                </div>
+                                                <div className={styles.infoBox}>
+                                                    {markerInfo.address}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </>
+                            }
+                            position={[markerInfo.lat, markerInfo.lng]}
+                            kakaoMap={state.kakaoMap!}
+                        />
+                    )
+                },
+            )}
         </div>
     )
 }

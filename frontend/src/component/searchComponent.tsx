@@ -58,10 +58,9 @@ export function SearchComponent() {
         let map = new kakao.maps.Map(container, {
             //지도의 중심좌표.
             center: new kakao.maps.LatLng(37.511337, 127.012084),
-
-            //지도의 레벨(확대, 축소 정도)
-            level: 8,
         })
+
+        map.setLevel(8)
 
         setState({
             ...state,

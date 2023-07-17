@@ -1,42 +1,24 @@
 from typing import cast
 
 from django.contrib.auth.signals import user_logged_in
+from django.db.models.query import QuerySet
 
-from rest_framework.request import Request
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.exceptions import PermissionDenied
-
-from knox.models import AuthToken
-
-from .typing import OAuthDataDict
-from .models import User
-from .auth import GoogleAuthentication, OAuthAuthentication
+from rest_framework.generics import RetrieveUpdateAPIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import CreateAPIView
 
 
-class OAuthLoginView(APIView):
-    authentication_classes: tuple[type[OAuthAuthentication]]
+from user.serializer import OAuthLoginSerializer
 
-    def create_token(self, user: User) -> str:
-        #TODO: token limit
-        _, token = AuthToken.objects.create(user)
-        return token
-
-    def post(self, request: Request):
-        user = cast(User, request.user)
-        auth = cast(OAuthDataDict, request.auth)
-
-        if not auth:
-            raise PermissionDenied()
-
-        if not user:
-            user = User.objects.create_oauth_user(auth)
-            
-        token = self.create_token(user)
-        user_logged_in.send(sender=user.__class__, request=request, user=user)
-        return Response({'token': token})
+from .models import Profile, User
 
 
-class GoogleLoginView(OAuthLoginView):
-    authentication_classes = (GoogleAuthentication,)
-        
+class OAuthLoginView(CreateAPIView):
+    serializer_class = OAuthLoginSerializer
+
+class ProfileView(RetrieveUpdateAPIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self) -> QuerySet:
+        user = cast(User, self.request.user)
+        return Profile.objects.filter(user=user)

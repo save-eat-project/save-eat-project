@@ -1,9 +1,9 @@
-from typing import Any, cast
+from typing import Any, TypedDict, cast
 from django.db import models, transaction
 from django.contrib.auth.models import AbstractUser, UserManager as BaseUserManager
 from uuid import uuid4
 
-from user.typing import OAuthDataDict
+from django.apps import apps
 
 
 class UserManager(BaseUserManager):
@@ -11,22 +11,26 @@ class UserManager(BaseUserManager):
     @transaction.atomic
     def create_oauth_user(
         self,
-        oauth_data: OAuthDataDict
-    ) :
+        name: str,
+        oauth_uid: str,
+        oauth_provider: str,
+        email: str | None = None,
+        avatar_url: str | None = None,
+    ):
         user = cast(User, self.create_user(
             username=str(uuid4()),
-            email=oauth_data['email'],
+            email=email,
             password=None,
         ))
         OAuth.objects.create(
             user=user,
-            auth_id=oauth_data['auth_id'],
-            provider=oauth_data['provider'],
+            uid=oauth_uid,
+            provider=oauth_provider,
         )
         Profile.objects.create(
             user=user,
-            name=oauth_data['name'],
-            avatar_url=oauth_data['avatar_url'],
+            name=name,
+            avatar_url=avatar_url,
         )
 
         return user
@@ -43,15 +47,31 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
 
 
+import knox.models
+from knox.settings import knox_settings
+class AuthTokenManager(knox.models.AuthTokenManager):
+    def create(self, user: User):
+        #TODO: token limit
+        return super().create(user)
+
+
+class AuthToken(knox.models.AuthToken):
+
+    class Meta:
+        proxy = True
+
+    objects = AuthTokenManager()
+
+
 class OAuth(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     provider = models.CharField(max_length=20)
-    auth_id = models.CharField(max_length=100)
+    uid = models.CharField(max_length=100)
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=('provider', 'auth_id'), name='unique_oauth_account'),
+                fields=('provider', 'uid'), name='unique_oauth_account'),
             models.UniqueConstraint(
                 fields=('user', 'provider'), name='one_provider_per_user'),
         ]

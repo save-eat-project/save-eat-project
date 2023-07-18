@@ -43,3 +43,13 @@ class OAuthLoginSerializer(serializers.Serializer):
         return {
             'token': token
         }
+
+
+class UserProfileSerializer(serializers.Serializer):
+    name = serializers.CharField()
+    avatar_url = serializers.CharField(required=False)
+
+    def update(self, instance: Profile, validated_data: dict):
+        instance.name = validated_data.get('name', instance.name)
+        instance.save()
+        return instance

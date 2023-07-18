@@ -3,14 +3,12 @@ from typing import cast
 from django.contrib.auth.signals import user_logged_in
 from django.db.models.query import QuerySet
 
-from rest_framework.generics import RetrieveUpdateAPIView
+from rest_framework.generics import RetrieveUpdateAPIView, CreateAPIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.generics import CreateAPIView
 
 
-from user.serializer import OAuthLoginSerializer
-
-from .models import Profile, User
+from user.serializer import OAuthLoginSerializer, UserProfileSerializer
+from user.models import Profile, User
 
 
 class OAuthLoginView(CreateAPIView):
@@ -18,7 +16,8 @@ class OAuthLoginView(CreateAPIView):
 
 class ProfileView(RetrieveUpdateAPIView):
     permission_classes = (IsAuthenticated,)
+    serializer_class = UserProfileSerializer
 
-    def get_queryset(self) -> QuerySet:
+    def get_object(self):
         user = cast(User, self.request.user)
-        return Profile.objects.filter(user=user)
+        return Profile.objects.get(user=user)

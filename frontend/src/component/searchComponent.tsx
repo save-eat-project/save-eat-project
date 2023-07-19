@@ -114,16 +114,6 @@ export function SearchComponent() {
         })
     }
 
-    //검색결과 페이지 이전버튼 클릭
-    const onPrevPageClick = () => {
-        state.search?.pagination.prevPage()
-    }
-
-    //검색결과 페이지 다음버튼 클릭
-    const onNextPageClick = () => {
-        state.search?.pagination.nextPage()
-    }
-
     //검색결과 출력함수
     function SearchResultReturn() {
         if (!state.search) return <div>검색 결과가 없습니다.</div>
@@ -140,8 +130,6 @@ export function SearchComponent() {
         if (maxPage === 0) {
             return <div>검색 결과가 없습니다.</div>
         }
-
-        console.log(jsonObject)
 
         return (
             <>
@@ -215,7 +203,7 @@ export function SearchComponent() {
                         disabled={
                             state.search.pagination.hasPrevPage ? false : true
                         }
-                        onClick={onPrevPageClick}
+                        onClick={() => state.search?.pagination.prevPage()}
                     />
                     <div className={styles.PageNumber}>
                         {state.search.pagination.current + ' / ' + maxPage}
@@ -225,7 +213,7 @@ export function SearchComponent() {
                         disabled={
                             state.search.pagination.hasNextPage ? false : true
                         }
-                        onClick={onNextPageClick}
+                        onClick={() => state.search?.pagination.nextPage()}
                     />
                 </div>
             </>
@@ -234,7 +222,6 @@ export function SearchComponent() {
 
     return (
         <div>
-            <h1>가게 정보</h1>
             <div className={styles.SearchTextContainer}>
                 <Search
                     placeholder="input search text"
@@ -243,6 +230,11 @@ export function SearchComponent() {
                 />
             </div>
 
+            <div>
+                {state.search
+                    ? '검색결과 : ' + state.search.pagination.totalCount
+                    : null}
+            </div>
             <div className={styles.SearchResultContainer}>
                 <ul className={styles.SearchList}>{SearchResultReturn()}</ul>
             </div>

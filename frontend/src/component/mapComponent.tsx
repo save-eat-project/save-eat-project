@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { ReactEventHandler, useEffect, useState } from 'react'
 import styles from '@styles/mapComponent.module.css'
 import useGeolocation from '../hook/useGeolocation'
 import { MARKER_TYPE, MarkerComponent } from '../component/markerComponent'
-import { CustomOverlay } from './customOverlay'
 
 //https://www.npmjs.com/package/@types/kakaomaps
 //https://apis.map.kakao.com/web/
@@ -118,11 +117,12 @@ export function MapComponent() {
     //지도를 현재 위치로 이동하며, 현재 위치에 마커를 생성합니다.
     useEffect(() => {
         if (!state.currentLocation) return
-
         if (!state.kakaoMap) return
 
-        var lat = state.currentLocation.lat
-        var lng = state.currentLocation.lng
+        var { lat, lng } = state.currentLocation
+
+        // var lat = state.currentLocation.lat
+        // var lng = state.currentLocation.lng
 
         state.kakaoMap.setCenter(new kakao.maps.LatLng(lat, lng))
         state.kakaoMap.setLevel(3)
@@ -132,10 +132,6 @@ export function MapComponent() {
             markerPosition: [lat, lng],
         })
     }, [state.currentLocation])
-
-    const onCurrentLocationClick = () => {
-        SaveLocation()
-    }
 
     function SaveLocation() {
         if (location.loaded === true) {
@@ -169,12 +165,11 @@ export function MapComponent() {
 
     return (
         <div>
-            <h1>지도</h1>
             <div className={styles.mapContainer}>
                 <div id="map" className={styles.kakaoMap}></div>
                 <button
                     className={styles.locationButton}
-                    onClick={onCurrentLocationClick}
+                    onClick={SaveLocation}
                 >
                     <div className={styles.locationButtonImage}></div>
                     <div className={styles.locationButtonText}>내 위치</div>
@@ -189,15 +184,22 @@ export function MapComponent() {
             </div>
             {TEMPORARY_MARKER_ARRAY.map(
                 (markerInfo: customOverlay, index: number) => {
+                    const onCustomOverlayClick = () => {
+                        console.log(markerInfo.name)
+                    }
+
                     return (
-                        <CustomOverlay
+                        <MarkerComponent
                             key={index}
                             children={
                                 <>
                                     <div
                                         className={styles.markerBubbleContainer}
                                     >
-                                        <div className={styles.markerBubble}>
+                                        <div
+                                            className={styles.markerBubble}
+                                            onClick={onCustomOverlayClick}
+                                        >
                                             <div className={styles.titleBox}>
                                                 <div className={styles.iconBox}>
                                                     <div
@@ -236,7 +238,9 @@ export function MapComponent() {
                                                 >
                                                     <div
                                                         className={styles.img}
-                                                        // style=background-image:url({marker.img})
+                                                        style={{
+                                                            backgroundImage: `url(${markerInfo.img})`,
+                                                        }}
                                                     ></div>
                                                 </div>
                                                 <div className={styles.infoBox}>
@@ -248,6 +252,7 @@ export function MapComponent() {
                                 </>
                             }
                             position={[markerInfo.lat, markerInfo.lng]}
+                            markerType={MARKER_TYPE.CUSTOM_OVERLAY}
                             kakaoMap={state.kakaoMap!}
                         />
                     )

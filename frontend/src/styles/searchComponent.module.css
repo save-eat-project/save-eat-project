@@ -19,8 +19,18 @@
         height: 250px;
     }
 }
-.SearchTextContainer{
+
+.SearchTextContainer {
+    margin-top: 10px;
     margin-left: 10px;
+    display: flex;
+
+    .SearchResultText {
+        display: flex;
+        align-items: center;
+        margin-left: 10px;
+        font-family: 'SpoqaHanSansNeo';
+    }
 }
 
 .SearchResultContainer {
@@ -63,8 +73,8 @@
                         margin-left: 5px;
                     }
 
-                    .DivideLine{
-                        border-right: 1px solid gray;                        
+                    .DivideLine {
+                        border-right: 1px solid gray;
                         padding-top: 4%;
                         padding-bottom: 4%;
                         margin-left: 5px;
@@ -78,7 +88,6 @@
                         background-size: 110%;
                         padding: 5%;
                     }
-                    
                 }
             }
 

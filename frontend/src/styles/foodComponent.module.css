@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+@font-face {
+    font-family: 'SpoqaHanSansNeo_Bold';
+    src: url('../../public/SpoqaHanSansNeo-Bold.ttf') format('truetype');
+}
+
+.PictureContainer {
+    display: flex;
+    .LeftContainer {
+        text-align: right;
+        width: 20%;
+    }
+    .RightContainer {
+        width: 80%;
+    }
+}

@@ -12,14 +12,6 @@ import { Input } from 'antd'
 //https://www.npmjs.com/package/@types/kakaomaps
 //https://apis.map.kakao.com/web/
 
-/**
- * Todo
- *
- * 커스텀 컴포넌트 접기 / 펼치기기능 넣기?
- * "지도로 이동" 마커 정보 출력
- *
- */
-
 //state 인터페이스
 interface State {
     //Geolocation 후크로 받아온 현재 위치
@@ -221,19 +213,18 @@ export function SearchComponent() {
     }
 
     return (
-        <div>
+        <>
             <div className={styles.SearchTextContainer}>
                 <Search
                     placeholder="input search text"
                     onSearch={onSearchButtonClick}
                     style={{ width: 200 }}
                 />
-            </div>
-
-            <div>
-                {state.search
-                    ? '검색결과 : ' + state.search.pagination.totalCount
-                    : null}
+                <div className={styles.SearchResultText}>
+                    {state.search
+                        ? '검색결과 : ' + state.search.pagination.totalCount
+                        : null}
+                </div>
             </div>
             <div className={styles.SearchResultContainer}>
                 <ul className={styles.SearchList}>{SearchResultReturn()}</ul>
@@ -248,6 +239,6 @@ export function SearchComponent() {
             <div className={styles.mapContainer}>
                 <div id="map" className={styles.kakaoMap} />
             </div>
-        </div>
+        </>
     )
 }

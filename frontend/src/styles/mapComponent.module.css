@@ -36,14 +36,13 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                .img {
-                    background-image: url('../../public/iconmonstr-eat-3-white.svg');
-                    background-repeat: no-repeat;
-                    background-position: center;
-                    background-size: contain;
-                    width: 80%;
-                    height: 80%;
-                }
+                background-image: url('../../public/iconmonstr-eat-3-white.svg');
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: contain;
+                background-origin: content-box;
+                padding-top: 2px;
+                padding-bottom: 2px;
             }
             .starRateBox {
                 width: 10%;

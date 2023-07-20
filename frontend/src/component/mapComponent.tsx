@@ -201,11 +201,9 @@ export function MapComponent() {
                                             onClick={onCustomOverlayClick}
                                         >
                                             <div className={styles.titleBox}>
-                                                <div className={styles.iconBox}>
-                                                    <div
-                                                        className={styles.img}
-                                                    ></div>
-                                                </div>
+                                                <div
+                                                    className={styles.iconBox}
+                                                ></div>
                                                 <div
                                                     className={
                                                         styles.restaurantName

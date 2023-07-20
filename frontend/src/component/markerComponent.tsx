@@ -1,9 +1,6 @@
 import { useEffect, ReactNode, useMemo } from 'react'
 import { createRoot } from 'react-dom/client'
 
-//https://www.npmjs.com/package/@types/kakaomaps
-//https://apis.map.kakao.com/web/
-
 export enum MARKER_TYPE {
     SEARCH,
     MYLOCATION,
@@ -19,7 +16,10 @@ interface MarkerProps {
 
 export function MarkerComponent(props: MarkerProps) {
     const marker = useMemo(() => new kakao.maps.Marker(), [])
-    const customOverlay = useMemo(() => new kakao.maps.CustomOverlay(), [])
+    const customOverlay = useMemo(
+        () => new kakao.maps.CustomOverlay({ clickable: true }),
+        [],
+    )
 
     useEffect(() => {
         const element = document.createElement('div')

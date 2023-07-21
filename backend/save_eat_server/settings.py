@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-#u31_*%6j2$i(zu1@_8a_@ba918=4@%aosp_1*stp-@c6n(c4%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -45,12 +45,14 @@ INSTALLED_APPS = [
     'rest_framework',
     'knox',
     'drf_spectacular',
+    'corsheaders',
     'user.apps.UserConfig',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -146,3 +148,6 @@ REST_KNOX = {
     'AUTO_REFRESH': True,
     'AUTH_HEADER_PREFIX': 'Bearer'
 }
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True

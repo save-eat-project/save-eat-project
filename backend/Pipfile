@@ -10,6 +10,7 @@ djangorestframework = "*"
 google-api-python-client = "*"
 django-admin-honeypot = "*"
 python-dotenv = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 autopep8 = "*"

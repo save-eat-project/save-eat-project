@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'corsheaders',
     'user.apps.UserConfig',
+    'eats.apps.EatsConfig',
 ]
 
 MIDDLEWARE = [

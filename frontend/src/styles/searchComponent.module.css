@@ -1,15 +1,3 @@
-@charset "UTF-8";
-
-@font-face {
-    font-family: 'SpoqaHanSansNeo_Bold';
-    src: url('../../public/SpoqaHanSansNeo-Bold.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'SpoqaHanSansNeo';
-    src: url('../../public/SpoqaHanSansNeo-Regular.ttf') format('truetype');
-}
-
 .mapContainer {
     position: relative;
     padding: 10px;
@@ -34,10 +22,10 @@
 }
 
 .SearchResultContainer {
-    height: 200px;
+    height: 150px;
     overflow-y: scroll;
     margin: 10px;
-    border: 1px solid gray;
+    border: 1px solid #d9d9d9;
 
     .SearchList {
         font-family: 'SpoqaHanSansNeo';
@@ -52,25 +40,31 @@
             .Top {
                 display: flex;
                 font-size: large;
-
-                .PlaceName {
-                    width: 60%;
-                    color: #ff6347;
-                    font-family: 'SpoqaHanSansNeo_Bold';
+                .Title {
+                    width: 80%;
+                    display: flex;
+                    .PlaceName {
+                        color: #ff6347;
+                        font-family: 'SpoqaHanSansNeo_Bold';
+                    }
+                    .Expand {
+                        color: gray;
+                        font-size: 14px;
+                        padding: 0.2em;
+                    }
                 }
 
                 .Buttons {
-                    width: 40%;
+                    width: 20%;
                     display: flex;
                     justify-content: flex-end;
                     align-items: center;
 
                     button {
-                        background-color: #fff;
-                        border: transparent;
-                        border-radius: 5px;
                         font-family: 'SpoqaHanSansNeo';
+                        border: transparent;
                         margin-left: 5px;
+                        background-color: transparent;
                     }
 
                     .DivideLine {
@@ -86,7 +80,7 @@
                         background-repeat: no-repeat;
                         background-position: center;
                         background-size: 110%;
-                        padding: 5%;
+                        padding: 12%;
                     }
                 }
             }
@@ -105,11 +99,23 @@
             border-bottom: none;
         }
 
+        .Selected {
+            background-color: #eee;
+        }
+
         .Page {
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: 'SpoqaHanSansNeo_Bold';
+            .PageNumber {
+                margin-left: 10px;
+                margin-right: 10px;
+            }
+
+            .Disabled {
+                color: #d9d9d9;
+            }
         }
     }
 }

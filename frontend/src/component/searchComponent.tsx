@@ -1,16 +1,16 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext, useRef } from 'react'
 import styles from '@styles/searchComponent.module.css'
 import { MARKER_TYPE, MarkerComponent } from '../component/markerComponent'
-import {
-    LeftOutlined,
-    RightOutlined,
-    SearchOutlined,
-    AudioOutlined,
-} from '@ant-design/icons'
+import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import { Input } from 'antd'
 
 //https://www.npmjs.com/package/@types/kakaomaps
 //https://apis.map.kakao.com/web/
+
+//todo
+//펼치기하면 해당 상단으로 스크롤 이동?
+
+const MAX_DISPLAYED_SEARCHRESULT: number = 15
 
 //state 인터페이스
 interface State {
@@ -31,6 +31,9 @@ interface State {
     markerPosition?: [number, number]
 
     kakaoMap?: kakao.maps.Map
+
+    expandDetailIndex: number
+    selectResultIndex: number
 }
 
 export function SearchComponent() {
@@ -41,7 +44,11 @@ export function SearchComponent() {
         search: undefined,
         markerPosition: undefined,
         kakaoMap: undefined,
+        expandDetailIndex: -1,
+        selectResultIndex: -1,
     })
+
+    const searchResultCard = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         let container = document.getElementById('map')
@@ -106,6 +113,54 @@ export function SearchComponent() {
         })
     }
 
+    const onPageClick = (isNextButton: boolean) => {
+        const pagination = state.search?.pagination
+        if (!pagination) return
+
+        const hasRequestPage = isNextButton
+            ? pagination.hasNextPage
+            : pagination.hasPrevPage
+
+        if (!hasRequestPage) return
+
+        isNextButton ? pagination.nextPage() : pagination.prevPage()
+
+        searchResultCard.current?.scrollTo({
+            top: 0,
+        })
+    }
+
+    const onExpandLabelClick = (index: number) => {
+        var setValue = -1
+        if (state.expandDetailIndex !== index) {
+            setValue = index
+        }
+        setState({
+            ...state,
+            expandDetailIndex: setValue,
+        })
+    }
+
+    //지도로 이동 버튼 클릭
+    const onSelectButtonClick = (element: any, index: number) => {
+        const { x: lng, y: lat } = element
+
+        if (!state.kakaoMap) return
+
+        //마커가 지도 중앙에 보이도록 이동합니다.
+        //Level(줌)을 먼저 설정해서 Center가 뒤틀리는걸 방지합니다.
+        const latlng = new kakao.maps.LatLng(lat, lng)
+        state.kakaoMap.setLevel(2)
+        state.kakaoMap.setCenter(latlng)
+
+        //MarkerComponent를 호출하기 위해 state를 set합니다.
+        setState({
+            ...state,
+            markerPosition: [lat, lng],
+            selectResultIndex: index,
+        })
+    }
+
     //검색결과 출력함수
     function SearchResultReturn() {
         if (!state.search) return <div>검색 결과가 없습니다.</div>
@@ -126,35 +181,41 @@ export function SearchComponent() {
         return (
             <>
                 {jsonObject.map((element: any, index: number) => {
-                    //지도로 이동 버튼 클릭
-                    const onSelectButtonClick = () => {
-                        const { x: lng, y: lat } = element
-
-                        if (!state.kakaoMap) return
-
-                        //마커가 지도 중앙에 보이도록 이동합니다.
-                        const latlng = new kakao.maps.LatLng(lat, lng)
-                        state.kakaoMap.setCenter(latlng)
-                        state.kakaoMap.setLevel(2)
-
-                        //MarkerComponent를 호출하기 위해 state를 set합니다.
-                        setState({
-                            ...state,
-                            markerPosition: [lat, lng],
-                        })
-                    }
                     return (
                         <li
-                            className={styles.SearchCard}
+                            className={`${styles.SearchCard}
+                                ${
+                                    state.selectResultIndex === index
+                                        ? styles.Selected
+                                        : ''
+                                }
+                            `}
                             key={index}
-                            onClick={onSelectButtonClick}
                         >
                             <div className={styles.Top}>
-                                <div className={styles.PlaceName}>
-                                    {element.place_name}
+                                <div className={styles.Title}>
+                                    <label className={styles.PlaceName}>
+                                        {element.place_name}
+                                    </label>
+                                    <label
+                                        className={styles.Expand}
+                                        onClick={() =>
+                                            onExpandLabelClick(index)
+                                        }
+                                    >
+                                        {state.expandDetailIndex === index
+                                            ? '접기'
+                                            : '펼치기'}
+                                    </label>
                                 </div>
                                 <div className={styles.Buttons}>
-                                    <button>선택</button>
+                                    <button
+                                        onClick={() =>
+                                            onSelectButtonClick(element, index)
+                                        }
+                                    >
+                                        선택
+                                    </button>
 
                                     <div className={styles.DivideLine} />
 
@@ -169,43 +230,47 @@ export function SearchComponent() {
                                     />
                                 </div>
                             </div>
-                            <div className={styles.Content}>
-                                <div className={styles.Category}>
-                                    {element.category_name.replace(
-                                        '음식점 > ',
-                                        '',
-                                    )}
+                            {state.expandDetailIndex === index && (
+                                <div className={styles.Content}>
+                                    <label className={styles.Category}>
+                                        {element.category_name.replace(
+                                            '음식점 > ',
+                                            '',
+                                        )}
+                                    </label>
+                                    <label className={styles.Address}>
+                                        {element.road_address_name}
+                                    </label>
+                                    <label className={styles.Phone}>
+                                        {'전화번호 : ' +
+                                            (element.phone === ''
+                                                ? '등록되지 않음'
+                                                : element.phone)}
+                                    </label>
                                 </div>
-                                <div className={styles.Address}>
-                                    {element.road_address_name}
-                                </div>
-                                <div className={styles.Phone}>
-                                    {'전화번호 : ' +
-                                        (element.phone === ''
-                                            ? '등록되지 않음'
-                                            : element.phone)}
-                                </div>
-                            </div>
+                            )}
                         </li>
                     )
                 })}
                 <div className={styles.Page}>
                     <LeftOutlined
-                        className={styles.LeftButton}
-                        disabled={
-                            state.search.pagination.hasPrevPage ? false : true
+                        className={
+                            state.search.pagination.hasPrevPage
+                                ? undefined
+                                : styles.Disabled
                         }
-                        onClick={() => state.search?.pagination.prevPage()}
+                        onClick={() => onPageClick(false)}
                     />
                     <div className={styles.PageNumber}>
                         {state.search.pagination.current + ' / ' + maxPage}
                     </div>
                     <RightOutlined
-                        className={styles.RightButton}
-                        disabled={
-                            state.search.pagination.hasNextPage ? false : true
+                        className={
+                            state.search.pagination.hasNextPage
+                                ? undefined
+                                : styles.Disabled
                         }
-                        onClick={() => state.search?.pagination.nextPage()}
+                        onClick={() => onPageClick(true)}
                     />
                 </div>
             </>
@@ -220,13 +285,16 @@ export function SearchComponent() {
                     onSearch={onSearchButtonClick}
                     style={{ width: 200 }}
                 />
-                <div className={styles.SearchResultText}>
+                {/* <div className={styles.SearchResultText}>
                     {state.search
                         ? '검색결과 : ' + state.search.pagination.totalCount
                         : null}
-                </div>
+                </div> */}
             </div>
-            <div className={styles.SearchResultContainer}>
+            <div
+                className={styles.SearchResultContainer}
+                ref={searchResultCard}
+            >
                 <ul className={styles.SearchList}>{SearchResultReturn()}</ul>
             </div>
             {state.markerPosition ? (

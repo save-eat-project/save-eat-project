@@ -6,12 +6,56 @@
 }
 
 .PictureContainer {
+    font-family: 'spoqaHanSansNeo';
     display: flex;
+    margin-bottom: 10px;
     .LeftContainer {
         text-align: right;
+        display: flex;
+        flex-direction: column;
         width: 20%;
     }
     .RightContainer {
         width: 80%;
+        height: 200px;
+        .img {
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            height: 80%;
+        }
+    }
+}
+
+.PriceContainer {
+    font-family: 'spoqaHanSansNeo';
+    display: flex;
+    margin-bottom: 10px;
+    .LeftContainer {
+        text-align: right;
+        width: 20%;
+        .Label {
+            display: flex;
+            height: 100%;
+            justify-content: right;
+            align-items: center;
+        }
+    }
+    .RightContainer {
+        width: 40%;
+        padding-left: 10px;
+    }
+}
+
+.TagContainer {
+    font-family: 'spoqaHanSansNeo';
+    display: flex;
+    flex-direction: column;
+    .Label {
+        width: 20%;
+        text-align: right;
+    }
+    .Tag {
+        margin: 10px;
     }
 }

@@ -17,12 +17,42 @@
     }
     .RightContainer {
         width: 80%;
-        height: 200px;
-        .img {
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: contain;
-            height: 80%;
+        height: 180px;
+        .ImageContainer{
+            display: flex;
+            height: 92%;
+            align-items: center;
+            justify-content: center;
+            .Button{
+                width: 10%;
+            }
+            .img {
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: contain;
+                border:3px dashed black;
+                height: 90%;
+                width: 80%;
+            }
+        }
+        .PaginationContainer{
+            margin: auto;
+            display: flex;
+            height: 8%;
+            width: 40%;
+            .PageButton{
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: contain;
+                height: 100%;
+                width: 100%;
+            }
+            .Page_None{
+                background-image: url('../../public/GrayWhiteCircle.svg');
+            }
+            .Page_Selected{
+                background-image: url('../../public/GrayCircle.svg');
+            }
         }
     }
 }
@@ -42,7 +72,7 @@
         }
     }
     .RightContainer {
-        width: 40%;
+        width: 50%;
         padding-left: 10px;
     }
 }

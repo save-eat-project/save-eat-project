@@ -26,13 +26,17 @@
             .Button{
                 width: 10%;
             }
-            .img {
+            .Img {
                 background-repeat: no-repeat;
                 background-position: center;
                 background-size: contain;
-                border:3px dashed black;
                 height: 90%;
                 width: 80%;
+            }
+
+            .Img_None{
+                border:3px dashed black;
+                background-image: url('../../public/iconmonstr-plus-circle-lined.svg');
             }
         }
         .PaginationContainer{
@@ -80,12 +84,20 @@
 .TagContainer {
     font-family: 'spoqaHanSansNeo';
     display: flex;
-    flex-direction: column;
-    .Label {
-        width: 20%;
+    .LeftContainer {
         text-align: right;
+        width: 20%;
+        .Label {
+            display: flex;
+            height: 100%;
+            justify-content: right;
+            align-items: center;
+        }
     }
-    .Tag {
-        margin: 10px;
+    .RightContainer {
+        width: 50%;
+        .Tag {
+            margin: 10px;
+        }
     }
 }

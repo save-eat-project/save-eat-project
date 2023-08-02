@@ -157,7 +157,7 @@ export function MapComponent() {
                         location.error?.code +
                         '\n' +
                         'message : ' +
-                        location.error?.message,
+                        location.error?.message
                 )
             }
         }
@@ -167,10 +167,7 @@ export function MapComponent() {
         <div>
             <div className={styles.mapContainer}>
                 <div id="map" className={styles.kakaoMap}></div>
-                <button
-                    className={styles.locationButton}
-                    onClick={SaveLocation}
-                >
+                <button className={styles.locationButton} onClick={SaveLocation}>
                     <div className={styles.locationButtonImage}></div>
                     <div className={styles.locationButtonText}>내 위치</div>
                 </button>
@@ -182,80 +179,56 @@ export function MapComponent() {
                     />
                 ) : null}
             </div>
-            {TEMPORARY_MARKER_ARRAY.map(
-                (markerInfo: customOverlay, index: number) => {
-                    const onCustomOverlayClick = () => {
-                        console.log(markerInfo.name)
-                    }
+            {TEMPORARY_MARKER_ARRAY.map((markerInfo: customOverlay, index: number) => {
+                const onCustomOverlayClick = () => {
+                    console.log(markerInfo.name)
+                }
 
-                    return (
-                        <MarkerComponent
-                            key={index}
-                            children={
-                                <>
+                return (
+                    <MarkerComponent
+                        key={index}
+                        children={
+                            <>
+                                <div className={styles.markerBubbleContainer}>
                                     <div
-                                        className={styles.markerBubbleContainer}
+                                        className={styles.markerBubble}
+                                        onClick={onCustomOverlayClick}
                                     >
-                                        <div
-                                            className={styles.markerBubble}
-                                            onClick={onCustomOverlayClick}
-                                        >
-                                            <div className={styles.titleBox}>
-                                                <div
-                                                    className={styles.iconBox}
-                                                ></div>
-                                                <div
-                                                    className={
-                                                        styles.restaurantName
-                                                    }
-                                                >
-                                                    {markerInfo.name}
-                                                </div>
-                                                <div
-                                                    className={
-                                                        styles.starRateBox
-                                                    }
-                                                >
-                                                    <div
-                                                        className={
-                                                            styles.starImg
-                                                        }
-                                                    ></div>
-                                                    <div
-                                                        className={
-                                                            styles.starRate
-                                                        }
-                                                    >
-                                                        {markerInfo.star}
-                                                    </div>
-                                                </div>
+                                        <div className={styles.titleBox}>
+                                            <div className={styles.iconBox}></div>
+                                            <div className={styles.restaurantName}>
+                                                {markerInfo.name}
                                             </div>
-                                            <div className={styles.contentBox}>
-                                                <div
-                                                    className={styles.imageBox}
-                                                >
-                                                    <div
-                                                        className={styles.img}
-                                                        style={{
-                                                            backgroundImage: `url(${markerInfo.img})`,
-                                                        }}
-                                                    ></div>
-                                                </div>
-                                                <div className={styles.infoBox}>
-                                                    {markerInfo.address}
+                                            <div className={styles.starRateBox}>
+                                                <div className={styles.starImg}></div>
+                                                <div className={styles.starRate}>
+                                                    {markerInfo.star}
                                                 </div>
                                             </div>
                                         </div>
+                                        <div className={styles.contentBox}>
+                                            <div className={styles.imageBox}>
+                                                <div
+                                                    className={styles.img}
+                                                    style={{
+                                                        backgroundImage: `url(${markerInfo.img})`,
+                                                    }}
+                                                ></div>
+                                            </div>
+                                            <div className={styles.infoBox}>
+                                                {markerInfo.address}
+                                            </div>
+                                        </div>
                                     </div>
-                                </>
-                            }
-                            position={[markerInfo.lat, markerInfo.lng]}
-                            markerType={MARKER_TYPE.CUSTOM_OVERLAY}
-                            kakaoMap={state.kakaoMap!}
-                        />
-                    )
-                },
-            )}
+                                </div>
+                            </>
+                        }
+                        position={[markerInfo.lat, markerInfo.lng]}
+                        markerType={MARKER_TYPE.CUSTOM_OVERLAY}
+                        kakaoMap={state.kakaoMap!}
+                    />
+                )
+            })}
         </div>
     )
 }

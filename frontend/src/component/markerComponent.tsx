@@ -18,7 +18,7 @@ export function MarkerComponent(props: MarkerProps) {
     const marker = useMemo(() => new kakao.maps.Marker(), [])
     const customOverlay = useMemo(
         () => new kakao.maps.CustomOverlay({ clickable: true }),
-        [],
+        []
     )
 
     useEffect(() => {

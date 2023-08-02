@@ -137,11 +137,9 @@ export function EditableTagComponent() {
                             style={{ userSelect: 'none' }}
                             onClose={() => handleClose(tag)}
                             color={
-                                index ===
-                                state.tags.indexOf(state.duplicateTagName)
+                                index === state.tags.indexOf(state.duplicateTagName)
                                     ? 'red'
-                                    : index ===
-                                      state.tags.indexOf(state.newTagName)
+                                    : index === state.tags.indexOf(state.newTagName)
                                     ? 'gold'
                                     : ''
                             }

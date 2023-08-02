@@ -75,7 +75,7 @@ export function SearchComponent() {
         var SearchCallback = function (
             result: any[],
             status: kakao.maps.services.Status,
-            pagination: kakao.maps.services.Pagination,
+            pagination: kakao.maps.services.Pagination
         ) {
             //검색결과가 정상적으로 반환됐을 때.
             if (
@@ -171,7 +171,7 @@ export function SearchComponent() {
         //총 검색결과 나누기 15로 몇 개의 페이지가 존재하는지 계산합니다.
         //webpack config의 상수로 선언되어있습니다.
         const maxPage = Math.ceil(
-            state.search.pagination.totalCount / MAX_DISPLAYED_SEARCHRESULT,
+            state.search.pagination.totalCount / MAX_DISPLAYED_SEARCHRESULT
         )
 
         if (maxPage === 0) {
@@ -199,9 +199,7 @@ export function SearchComponent() {
                                     </label>
                                     <label
                                         className={styles.Expand}
-                                        onClick={() =>
-                                            onExpandLabelClick(index)
-                                        }
+                                        onClick={() => onExpandLabelClick(index)}
                                     >
                                         {state.expandDetailIndex === index
                                             ? '접기'
@@ -222,10 +220,7 @@ export function SearchComponent() {
                                     <button
                                         className={styles.Url}
                                         onClick={() =>
-                                            window.open(
-                                                `${element.place_url}`,
-                                                '_blank',
-                                            )
+                                            window.open(`${element.place_url}`, '_blank')
                                         }
                                     />
                                 </div>
@@ -233,10 +228,7 @@ export function SearchComponent() {
                             {state.expandDetailIndex === index && (
                                 <div className={styles.Content}>
                                     <label className={styles.Category}>
-                                        {element.category_name.replace(
-                                            '음식점 > ',
-                                            '',
-                                        )}
+                                        {element.category_name.replace('음식점 > ', '')}
                                     </label>
                                     <label className={styles.Address}>
                                         {element.road_address_name}
@@ -291,10 +283,7 @@ export function SearchComponent() {
                         : null}
                 </div> */}
             </div>
-            <div
-                className={styles.SearchResultContainer}
-                ref={searchResultCard}
-            >
+            <div className={styles.SearchResultContainer} ref={searchResultCard}>
                 <ul className={styles.SearchList}>{SearchResultReturn()}</ul>
             </div>
             {state.markerPosition ? (

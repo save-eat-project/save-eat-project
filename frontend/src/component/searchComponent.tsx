@@ -36,7 +36,11 @@ interface State {
     selectResultIndex: number
 }
 
-export function SearchComponent() {
+interface props {
+    DataReturnCallback: (lat: number, lng: number) => void
+}
+
+export function SearchComponent(props: props) {
     const { Search } = Input
 
     const [state, setState] = useState<State>({
@@ -117,9 +121,7 @@ export function SearchComponent() {
         const pagination = state.search?.pagination
         if (!pagination) return
 
-        const hasRequestPage = isNextButton
-            ? pagination.hasNextPage
-            : pagination.hasPrevPage
+        const hasRequestPage = isNextButton ? pagination.hasNextPage : pagination.hasPrevPage
 
         if (!hasRequestPage) return
 
@@ -159,6 +161,8 @@ export function SearchComponent() {
             markerPosition: [lat, lng],
             selectResultIndex: index,
         })
+
+        props.DataReturnCallback(lat, lng)
     }
 
     //검색결과 출력함수
@@ -184,11 +188,7 @@ export function SearchComponent() {
                     return (
                         <li
                             className={`${styles.SearchCard}
-                                ${
-                                    state.selectResultIndex === index
-                                        ? styles.Selected
-                                        : ''
-                                }
+                                ${state.selectResultIndex === index ? styles.Selected : ''}
                             `}
                             key={index}
                         >
@@ -201,16 +201,12 @@ export function SearchComponent() {
                                         className={styles.Expand}
                                         onClick={() => onExpandLabelClick(index)}
                                     >
-                                        {state.expandDetailIndex === index
-                                            ? '접기'
-                                            : '펼치기'}
+                                        {state.expandDetailIndex === index ? '접기' : '펼치기'}
                                     </label>
                                 </div>
                                 <div className={styles.Buttons}>
                                     <button
-                                        onClick={() =>
-                                            onSelectButtonClick(element, index)
-                                        }
+                                        onClick={() => onSelectButtonClick(element, index)}
                                     >
                                         선택
                                     </button>
@@ -247,9 +243,7 @@ export function SearchComponent() {
                 <div className={styles.Page}>
                     <LeftOutlined
                         className={
-                            state.search.pagination.hasPrevPage
-                                ? undefined
-                                : styles.Disabled
+                            state.search.pagination.hasPrevPage ? undefined : styles.Disabled
                         }
                         onClick={() => onPageClick(false)}
                     />
@@ -258,9 +252,7 @@ export function SearchComponent() {
                     </div>
                     <RightOutlined
                         className={
-                            state.search.pagination.hasNextPage
-                                ? undefined
-                                : styles.Disabled
+                            state.search.pagination.hasNextPage ? undefined : styles.Disabled
                         }
                         onClick={() => onPageClick(true)}
                     />
@@ -273,9 +265,9 @@ export function SearchComponent() {
         <>
             <div className={styles.SearchTextContainer}>
                 <Search
-                    placeholder="input search text"
+                    placeholder="가게명을 입력해주세요."
                     onSearch={onSearchButtonClick}
-                    style={{ width: 200 }}
+                    style={{ width: 250 }}
                 />
                 {/* <div className={styles.SearchResultText}>
                     {state.search

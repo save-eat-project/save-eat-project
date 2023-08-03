@@ -34,6 +34,7 @@ export function FoodComponent() {
         var filteringFiles = files.filter((element) => /^image\//.test(element.type))
 
         var allowedImageAmount = 5 - state.ImageAmount
+        var tempLoadImage = Array.from(state.LoadImage)
 
         //알람 메시지
         if (files.length !== filteringFiles.length)
@@ -47,7 +48,6 @@ export function FoodComponent() {
         const selectedFiles: string[] = filteringFiles.map((file) => {
             return URL.createObjectURL(file)
         })
-        var tempLoadImage = Array.from(state.LoadImage)
 
         selectedFiles.map((element: string, index: number) => {
             tempLoadImage[state.ImageAmount + index].URL = element
@@ -64,28 +64,60 @@ export function FoodComponent() {
         })
     }
 
+    const onPagePreviousButtonClick = () => {
+        MovePageAction(-1, 0)
+    }
+
+    const onPageNextButtonClick = () => {
+        var limitNum = 0
+        if (state.ImageAmount > 0) {
+            limitNum = state.ImageAmount - 1
+        }
+
+        MovePageAction(1, limitNum)
+    }
+
+    function MovePageAction(NumToAdd: number, limitCondition: number) {
+        if (state.ImageIndex === limitCondition) return
+
+        var requestIndex = state.ImageIndex + NumToAdd
+        pageRef.current[requestIndex]?.click()
+        console.log('request' + requestIndex)
+    }
+
     return (
         <>
             <div className={styles.PictureContainer}>
                 <div className={styles.LeftContainer}>
-                    <label>음식 사진</label>
-                    <label>{state.ImageAmount}/5</label>
+                    <div
+                        className={styles.AddImage}
+                        onClick={() => {
+                            // if (state.ImageAmount > 5) {
+                            //     alert('이미지가 5개 이상입니다. 삭제해주세요')
+                            //     return
+                            // }
+                            inputFileRef.current?.click()
+                        }}
+                    >
+                        <div className={styles.Icon}></div>
+                        <label>추가</label>
+                        <label>{state.ImageAmount}/5</label>
+                    </div>
                 </div>
                 <div className={styles.RightContainer}>
                     <div className={styles.ImageContainer}>
-                        <LeftOutlined className={styles.Button} />
+                        <LeftOutlined
+                            className={styles.Button}
+                            onClick={onPagePreviousButtonClick}
+                        />
                         <div
                             className={[styles.Img, styles.Img_None].join(' ')}
                             ref={imageRef}
-                            onClick={() => {
-                                if (state.ImageAmount < 5) {
-                                    alert('이미지가 5개 이상입니다. 삭제해주세요')
-                                    return
-                                }
-                                inputFileRef.current?.click()
-                            }}
                         ></div>
-                        <RightOutlined className={styles.Button} />
+                        <RightOutlined
+                            className={styles.Button}
+                            onClick={onPageNextButtonClick}
+                        />
                     </div>
                     <div className={styles.PaginationContainer}>
                         {state.LoadImage.map((element, index) => {
@@ -95,27 +127,38 @@ export function FoodComponent() {
                                 var tempImageRef = imageRef.current
 
                                 if (element.URL !== '') {
-                                    tempImageRef.classList.remove(styles.Img_None)
+                                    if (tempImageRef.classList.contains(styles.Img_None)) {
+                                        tempImageRef.classList.remove(styles.Img_None)
+                                    }
 
                                     //약간 잘못된것같음. 개발자도구에서 보면 &quot해서 특수문자 들어가있음.
                                     tempImageRef.style.setProperty(
                                         'background-image',
                                         `url(${element.URL})`
                                     )
-                                } else if (
-                                    !tempImageRef.classList.contains(styles.Img_None)
-                                ) {
-                                    imageRef.current?.classList.add(styles.Img_None)
-
-                                    tempImageRef.style.setProperty('background-image', ``)
+                                } else {
+                                    return
                                 }
+
+                                // else if (!tempImageRef.classList.contains(styles.Img_None)) {
+                                //     tempImageRef.classList.add(styles.Img_None)
+
+                                //     tempImageRef.style.setProperty('background-image', ``)
+                                // }
+
+                                setState({
+                                    ...state,
+                                    ImageIndex: index,
+                                })
                             }
                             return (
                                 <div
                                     className={`${styles.PageButton} ${
                                         element.URL === ''
                                             ? styles.Page_None
-                                            : styles.Page_Selected
+                                            : index === state.ImageIndex
+                                            ? styles.Page_Selected
+                                            : styles.Page_ExistImage
                                     }`}
                                     onClick={onPageButtonclick}
                                     key={index}

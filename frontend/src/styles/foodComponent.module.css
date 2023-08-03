@@ -1,19 +1,35 @@
-@charset "UTF-8";
-
-@font-face {
-    font-family: 'SpoqaHanSansNeo_Bold';
-    src: url('../../public/SpoqaHanSansNeo-Bold.ttf') format('truetype');
-}
-
 .PictureContainer {
     font-family: 'spoqaHanSansNeo';
     display: flex;
+    
     margin-bottom: 10px;
     .LeftContainer {
-        text-align: right;
-        display: flex;
-        flex-direction: column;
         width: 20%;
+        display: flex;
+        justify-content: flex-end;
+        .AddImage{
+            display: flex;
+            flex-direction: column;
+            width: 50%;
+            height: 30%;
+            border-radius: 5px;
+            border: 1px solid gray;
+            background-color: #ddd;
+            label{
+                font-size: 12px;
+                font-family: 'spoqaHanSansNeo_Bold';
+                text-align: center;
+                margin-bottom: -5px;
+                /* color: #FF6347; */
+            }
+            .Icon{
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: contain;
+                height: 50%;
+                background-image: url('../../public/iconmonstr-photo-camera-9.svg');
+            }            
+        }
     }
     .RightContainer {
         width: 80%;
@@ -25,6 +41,10 @@
             justify-content: center;
             .Button{
                 width: 10%;
+                border: 1px solid gray;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                border-radius: 5px;
             }
             .Img {
                 background-repeat: no-repeat;
@@ -36,7 +56,7 @@
 
             .Img_None{
                 border:3px dashed black;
-                background-image: url('../../public/iconmonstr-plus-circle-lined.svg');
+                /* background-image: url('../../public/iconmonstr-plus-circle-lined.svg'); */
             }
         }
         .PaginationContainer{
@@ -52,10 +72,13 @@
                 width: 100%;
             }
             .Page_None{
-                background-image: url('../../public/GrayWhiteCircle.svg');
+                background-image: url('../../public/PicturePage_GrayWhiteCircle.svg');
+            }
+            .Page_ExistImage{
+                background-image: url('../../public/PicturePage_GrayCircle.svg');
             }
             .Page_Selected{
-                background-image: url('../../public/GrayCircle.svg');
+                background-image: url('../../public/PicturePage_SelectCircle.svg');
             }
         }
     }
@@ -95,7 +118,7 @@
         }
     }
     .RightContainer {
-        width: 50%;
+        width: 80%;
         .Tag {
             margin: 10px;
         }

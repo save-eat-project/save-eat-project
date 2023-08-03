@@ -139,9 +139,10 @@ export function EditableTagComponent() {
                             color={
                                 index === state.tags.indexOf(state.duplicateTagName)
                                     ? 'red'
-                                    : index === state.tags.indexOf(state.newTagName)
-                                    ? 'gold'
-                                    : ''
+                                    : // 신규 태그 gold로 강조
+                                      // : index === state.tags.indexOf(state.newTagName)
+                                      // ? 'gold'
+                                      ''
                             }
                         >
                             <span

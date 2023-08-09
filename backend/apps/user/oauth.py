@@ -1,8 +1,7 @@
 
 from rest_framework.exceptions import AuthenticationFailed, ValidationError
 
-from user.typing import OAuthDataDict
-from user.settings import GOOGLE_OAUTH_CLIENT_ID
+from .settings import GOOGLE_OAUTH_CLIENT_ID
 
 
 class BaseOAuthAccount:
@@ -13,18 +12,17 @@ class BaseOAuthAccount:
     avatar_url: str | None
     email: str | None
 
-    def __init__(self, token: str):
+    def __init__(self, access_token: str):
         raise NotImplementedError()
 
 
 class GoogleOAuthAccount(BaseOAuthAccount):
 
     import google.oauth2.id_token as google_oauth
-    import google.auth.transport.requests
     from google.auth.exceptions import GoogleAuthError
+    import google.auth.transport.requests
 
     provider = 'google'
-    
 
     def __init__(self, access_token: str) -> None:
         self._token = access_token
@@ -42,7 +40,6 @@ class GoogleOAuthAccount(BaseOAuthAccount):
         self.email = parsed['email'] if parsed['email_verified'] else None
 
 
-
 class OAuthAccount(BaseOAuthAccount):
 
     def __new__(cls, provider: str, access_token: str):
@@ -51,6 +48,3 @@ class OAuthAccount(BaseOAuthAccount):
                 return GoogleOAuthAccount(access_token)
             case _:
                 raise ValidationError('invalid provider %s' % provider)
-
-
-

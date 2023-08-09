@@ -1,7 +1,16 @@
 from django.db import models
 
+
 from user.models import User
 # from django.contrib.gis.db import models
+
+
+class Place(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=20)
+    code = models.CharField(max_length=20, null=True)
+    # geolocation = models.GeometryField(null=True)
+    address = models.CharField(max_length=100)
 
 
 class Eat(models.Model):
@@ -12,7 +21,7 @@ class Eat(models.Model):
     comment = models.CharField(max_length=50)
     eat_time = models.DateTimeField()
     tags = models.ManyToManyField('Tag', through='EatTag')
-    place = models.ForeignKey('Place', on_delete=models.CASCADE, blank=True)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE, null=True)
 
 
 class Tag(models.Model):
@@ -36,11 +45,3 @@ class EatTag(models.Model):
 class EatImage(models.Model):
     eat = models.ForeignKey(Eat, on_delete=models.CASCADE)
     # image = models.ImageField()
-
-
-class Place(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=20)
-    code = models.CharField(max_length=20, blank=True)
-    # geolocation = models.GeometryField(blank=True)
-    address = models.CharField(max_length=100)

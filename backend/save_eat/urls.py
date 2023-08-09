@@ -1,5 +1,5 @@
 """
-URL configuration for save_eat_server project.
+URL configuration for save_eat project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -23,5 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/user/', include('user.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    path('openapi/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('openapi/', SpectacularSwaggerView.as_view(url_name='schema'),
+         name='swagger-ui'),
 ]

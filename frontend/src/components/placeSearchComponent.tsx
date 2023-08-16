@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, useRef } from 'react'
-import styles from '@styles/searchComponent.module.css'
-import { MARKER_TYPE, MarkerComponent } from '../component/markerComponent'
+import styles from '@styles/placeSearchComponent.module.css'
+import { MARKER_TYPE, MarkerComponent } from '../components/markerComponent'
 import { LeftOutlined, RightOutlined } from '@ant-design/icons'
 import { Input } from 'antd'
 
@@ -11,6 +11,16 @@ import { Input } from 'antd'
 //펼치기하면 해당 상단으로 스크롤 이동?
 
 const MAX_DISPLAYED_SEARCHRESULT: number = 15
+
+export interface placeInfo {
+    code: ''
+    name: ''
+    coordinate: {
+        lat: 0
+        lng: 0
+    }
+    address: ''
+}
 
 //state 인터페이스
 interface State {
@@ -37,10 +47,10 @@ interface State {
 }
 
 interface props {
-    DataReturnCallback: (lat: number, lng: number) => void
+    PlaceSelectCallback: (info: placeInfo) => void
 }
 
-export function SearchComponent(props: props) {
+export function PlaceSearchComponent(props: props) {
     const { Search } = Input
 
     const [state, setState] = useState<State>({
@@ -145,7 +155,7 @@ export function SearchComponent(props: props) {
 
     //지도로 이동 버튼 클릭
     const onSelectButtonClick = (element: any, index: number) => {
-        const { x: lng, y: lat } = element
+        const { x: lng, y: lat, id, place_name, road_address_name } = element
 
         if (!state.kakaoMap) return
 
@@ -155,14 +165,25 @@ export function SearchComponent(props: props) {
         state.kakaoMap.setLevel(2)
         state.kakaoMap.setCenter(latlng)
 
+        //선택한 장소에 대한 정보를 Callback으로 반환합니다.
+        const placeInfo: placeInfo = {
+            code: id,
+            name: place_name,
+            coordinate: {
+                lat: lat,
+                lng: lng,
+            },
+            address: road_address_name,
+        }
+
+        props.PlaceSelectCallback(placeInfo)
+
         //MarkerComponent를 호출하기 위해 state를 set합니다.
         setState({
             ...state,
             markerPosition: [lat, lng],
             selectResultIndex: index,
         })
-
-        props.DataReturnCallback(lat, lng)
     }
 
     //검색결과 출력함수
@@ -193,14 +214,14 @@ export function SearchComponent(props: props) {
                             key={index}
                         >
                             <div className={styles.Top}>
-                                <div className={styles.Title}>
+                                <div
+                                    className={styles.Title}
+                                    onClick={() => onExpandLabelClick(index)}
+                                >
                                     <label className={styles.PlaceName}>
                                         {element.place_name}
                                     </label>
-                                    <label
-                                        className={styles.Expand}
-                                        onClick={() => onExpandLabelClick(index)}
-                                    >
+                                    <label className={styles.Expand}>
                                         {state.expandDetailIndex === index ? '접기' : '펼치기'}
                                     </label>
                                 </div>

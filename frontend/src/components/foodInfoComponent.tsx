@@ -1,4 +1,4 @@
-import styles from '@styles/foodComponent.module.css'
+import styles from '@styles/foodInfoComponent.module.css'
 import { Input } from 'antd'
 import { EditableTagComponent } from './editableTag_antd'
 import React, { useRef, useState } from 'react'
@@ -14,7 +14,7 @@ interface State {
 //todo
 //이미지 업로드 완료 이후, 편집버튼 눌르면 에디터 띄워서 편집 가능하게 ㄱㄱ.
 
-export function FoodComponent() {
+export function FoodInfoComponent() {
     const [state, setState] = useState<State>({
         LoadImage: [{ URL: '' }, { URL: '' }, { URL: '' }, { URL: '' }, { URL: '' }],
         ImageIndex: 0,

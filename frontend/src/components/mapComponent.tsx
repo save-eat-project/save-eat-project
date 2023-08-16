@@ -1,7 +1,7 @@
 import React, { ReactEventHandler, useEffect, useState } from 'react'
 import styles from '@styles/mapComponent.module.css'
 import useGeolocation from '../hook/useGeolocation'
-import { MARKER_TYPE, MarkerComponent } from '../component/markerComponent'
+import { MARKER_TYPE, MarkerComponent } from '../components/markerComponent'
 
 //https://www.npmjs.com/package/@types/kakaomaps
 //https://apis.map.kakao.com/web/

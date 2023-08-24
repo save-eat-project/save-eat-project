@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+djangorestframework = "*"
+google-api-python-client = "*"
+django-admin-honeypot = "*"
+python-dotenv = "*"
+django-cors-headers = "*"
+
+[dev-packages]
+autopep8 = "*"
+mypy = "*"
+djangorestframework-stubs = {extras = ["compatible-mypy"], version = "*"}
+django-stubs = {extras = ["compatible-mypy"], version = "*"}
+drf-spectacular = {extras = ["sidecar"], version = "*"}
+
+[requires]
+python_version = "3.10"
+python_full_version = "3.10.6"

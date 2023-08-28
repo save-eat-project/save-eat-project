@@ -1,21 +1,5 @@
 {
   "compilerOptions": {
-<<<<<<< HEAD
-    "strict": true,
-    "module": "CommonJS",
-    "target": "ESNext",
-    "jsx": "react-jsx",
-    "allowSyntheticDefaultImports": true,
-    "paths": {
-      "@styles/*": [
-        "./src/styles/*"
-      ],
-    }
-  },
-  "include": [
-    "src",
-    "types"
-=======
     "target": "es5",
     "lib": [
       "dom",
@@ -53,6 +37,5 @@
   ],
   "exclude": [
     "node_modules"
->>>>>>> develop/v0.1
   ]
 }

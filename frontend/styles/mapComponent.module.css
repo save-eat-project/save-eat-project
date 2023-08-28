@@ -1,0 +1,159 @@
+.title {
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'SpoqaHanSansNeo_Bold';
+}
+
+.markerBubbleContainer {
+    position: absolute;
+    transform: translateX(-50%) translateY(-100%);
+    font-family: 'SpoqaHanSansNeo_Bold';
+    .markerBubble {
+        background: #fff;
+        margin-bottom: 8px;
+        align-items: center;
+        width: 160px;
+        height: 80px;
+        border-radius: 10px;
+        color: #000;
+        text-align: center;
+        border: 1px solid black;
+        .titleBox {
+            height: 35%;
+            width: 100%;
+            border-radius: 8px 8px 0 0;
+            background-color: #ff6347;
+            display: flex;
+            .iconBox {
+                width: 20%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-image: url('../public/image/iconmonstr-eat-3-white.svg');
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: contain;
+                background-origin: content-box;
+                padding-top: 2px;
+                padding-bottom: 2px;
+            }
+            .starRateBox {
+                width: 10%;
+                line-height: 13px;
+                padding-right: 5px;
+                display: flex;
+                flex-direction: column;
+                .starImg {
+                    background-image: url('../public/image/star.svg');
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-size: contain;
+                    width: 100%;
+                    height: 100%;
+                }
+                .starRate {
+                    font-size: 12px;
+                    color: #fff;
+                }
+            }
+            .restaurantName {
+                width: 70%;
+                display: flex;
+                align-items: center;
+                font-size: 14px;
+                font-weight: 600;
+                color: #fff;
+            }
+        }
+        .contentBox {
+            height: 65%;
+            width: 100%;
+            font-size: 12px;
+            display: flex;
+            .imageBox {
+                width: 40%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                .img {
+                    background-repeat: no-repeat;
+                    background-position: center;
+                    background-size: contain;
+                    width: 80%;
+                    height: 80%;
+                }
+            }
+            .infoBox {
+                width: 60%;
+                white-space: normal;
+                font-size: 10px;
+                text-align: left;
+                align-items: center;
+                display: flex;
+            }
+        }
+    }
+    /* 말풍선 화살표 (container와 살짝 겹쳐서 말풍선이 위치한 쪽의 테두리를 덮어서 안보이게 함) */
+    .markerBubble:after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 10px;
+        border-style: solid;
+        display: block;
+        border-color: #fff transparent transparent transparent;
+    }
+    /* 말풍선 화살표테두리 (after 삼각형보다 약간 더 큰 화살표를 밑에 깔아서 테두리처럼 보이게 함) */
+    .markerBubble:before {
+        content: '';
+        position: absolute;
+        border-style: solid;
+        display: block;
+        bottom: -11px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 10px;
+        border-style: solid;
+        border-color: black transparent transparent transparent;
+    }
+}
+
+.mapContainer {
+    position: relative;
+    .kakaoMap {
+        height: 600px;
+    }
+}
+
+.locationButton {
+    padding: 3px;
+    background-color: white;
+    border-radius: 10px;
+    border: transparent;
+    box-shadow: 2px 2px 10px;
+    width: 50px;
+    height: 60px;
+    position: absolute;
+    right: 10px;
+    bottom: 50px;
+    z-index: 100;
+    font-family: 'SpoqaHanSansNeo_Bold';
+    display: flex;
+    flex-direction: column;
+    .locationButtonImage {
+        background-image: url('../public/image/iconmonstr-crosshair-9.svg');
+        background-repeat: no-repeat;
+        background-position: top;
+        background-size: 80%;
+        width: 100%;
+        height: 100%;
+    }
+    .locationButtonText {
+        font-size: 12px;
+        font-weight: bold;
+        width: 100%;
+    }
+}

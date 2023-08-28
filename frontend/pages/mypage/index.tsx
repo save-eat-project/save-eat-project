@@ -1,7 +1,13 @@
-
+import { FooterComponent } from "@/components/FooterComponent";
+import { HeaderComponent } from "@/components/HeaderComponent";
+import { MypageComponent1 } from "./MypageComponent";
 
 export default function MyPage() {
-    return <div>
-        MyPage
-    </div>
+    return (
+        <>
+            <HeaderComponent />
+            <MypageComponent1 />
+            <FooterComponent />
+        </>
+    )
 }

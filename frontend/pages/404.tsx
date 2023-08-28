@@ -1,6 +1,14 @@
+import { FooterComponent } from "@/components/FooterComponent"
+import { HeaderComponent } from "@/components/HeaderComponent"
 
 export default function NotFoundPage() {
-    return <div>
-        NotFoundPage
-    </div>
+    return (
+        <>
+            <HeaderComponent />
+            <div>
+                NotFoundPage
+            </div>
+            <FooterComponent />
+        </>
+    )
 }

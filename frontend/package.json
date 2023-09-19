@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "concurrently '(cd ../backend/ && pipenv run python manage.py runserver)' 'next dev'",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -24,6 +24,7 @@
   "devDependencies": {
     "@types/google.accounts": "^0.0.9",
     "autoprefixer": "^10.4.15",
+    "concurrently": "^8.2.1",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-nested": "^6.0.1",
     "postcss-preset-env": "^9.1.1"

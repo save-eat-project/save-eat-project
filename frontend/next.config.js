@@ -5,6 +5,10 @@ const nextConfig = {
   images: {
     unoptimized: true
   },
+  compiler: {
+    styledComponents: true,
+  },
+
   ...process.env.NODE_ENV === 'development' && {
     output: undefined,
     async rewrites() {

@@ -6,19 +6,29 @@ export const LOGIN_STATUS = 'LOGIN_STATUS'
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
 
+type LoginStatus = boolean | 'logout'
 
-export function useLoginStatus() {
-	return useQuery({
+
+export function useLoginStatusQuery() {
+	return useQuery<LoginStatus>({
 		queryKey: LOGIN_STATUS,
 		async queryFn() { 
-			// TODO: auth status 구현
-			// auth.status()
-			return false
+			console.log('fetch login status');
+			return new Promise(rs => setTimeout(rs, 1000, false))
+			// return false
 		},
-	})
+		refetchOnMount: false,
+		refetchOnWindowFocus: false,
+	});
 }
 
-export function useLogin() {
+export function useUserActive() {
+	const { isSuccess, data: isLoggedin } = useLoginStatusQuery()
+	return isSuccess && (isLoggedin === true)
+}
+
+
+export function useLoginMutation() {
 	const queryClient = useQueryClient();
 
 	return useMutation({
@@ -30,14 +40,14 @@ export function useLogin() {
 	})
 }
 
-export function useLogout() {
+export function useLogoutMutation() {
 	const queryClient = useQueryClient();
 
 	return useMutation({
 		mutationKey: LOGOUT,
 		mutationFn: auth.logout,
 		onSuccess: () => { 
-			queryClient.setQueryData(LOGIN_STATUS, false)
+			queryClient.setQueryData(LOGIN_STATUS, 'logout')
 		},
 	})
 }

@@ -1,4 +1,4 @@
-import { useLogin } from '@/hook/user';
+import { useLoginMutation } from '@/hook/user';
 import { LogoIcon } from '@/components/icon';
 
 import { useRouter } from 'next/router';
@@ -6,7 +6,7 @@ import { GoogleLoginButton } from './component/google_login_button';
 import { Modal } from 'antd';
 
 export function LoginContent() {
-    const login = useLogin()
+    const login = useLoginMutation()
     const router = useRouter()
 
     function loginWithGoogle(access_token: string) {

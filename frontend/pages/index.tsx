@@ -1,16 +1,21 @@
 import { HomeContent } from '@/components/content/home';
+import { LoginGuard } from '@/components/guard';
 import { Logo2Icon } from '@/components/icon';
-import { NavigationHeader, PageLayout } from '@/components/layout';
+import { HeaderLayout, PageLayout } from '@/components/layout';
 
 function HomeHeader() {
-  return <NavigationHeader
+  return <HeaderLayout
     title={<Logo2Icon height={24} />}
   />
 }
 
 export default function HomePage() {
-  return <PageLayout
-    header={<HomeHeader />}
-    content={<HomeContent />}
-  />
+
+  return <LoginGuard>
+    <PageLayout
+      header={<HomeHeader />}
+      content={<HomeContent />}
+    />
+  </LoginGuard> 
+
 }

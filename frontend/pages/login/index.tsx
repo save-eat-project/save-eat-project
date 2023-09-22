@@ -1,9 +1,9 @@
 import { LoginContent } from "@/components/content/login";
-import { PageLayout, NavigationHeader } from "@/components/layout";
+import { PageLayout, HeaderLayout } from "@/components/layout";
 
 
 function LoginHeader() {
-  return <NavigationHeader title={'로그인'} />
+  return <HeaderLayout title={'로그인'} transparent/>
 }
 
 

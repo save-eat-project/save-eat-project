@@ -34,8 +34,9 @@ SECRET_KEY = 'django-insecure-&x!v#q($j_gq-8lgev5!7l15zhbzl2i(tcexs+#3hvuvc%w+9f
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+# SECURE_REFERRER_POLICY = None
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -153,3 +154,5 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
 }
+
+CSRF_TRUSTED_ORIGINS=['http://localhost:3000']

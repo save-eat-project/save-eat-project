@@ -3,12 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "concurrently '(cd ../backend/ && pipenv run python manage.py runserver)' 'next dev'",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.2.6",
+    "@material-design-icons/svg": "^0.14.12",
     "@types/node": "20.4.9",
     "@types/react": "18.2.20",
     "@types/react-dom": "18.2.7",
@@ -18,12 +20,17 @@
     "next": "13.4.13",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-error-boundary": "^4.0.11",
+    "react-query": "^3.39.3",
     "recoil": "^0.7.7",
+    "styled-components": "^6.0.8",
     "typescript": "5.1.6"
   },
   "devDependencies": {
+    "@svgr/webpack": "^8.1.0",
     "@types/google.accounts": "^0.0.9",
     "autoprefixer": "^10.4.15",
+    "concurrently": "^8.2.1",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-nested": "^6.0.1",
     "postcss-preset-env": "^9.1.1"

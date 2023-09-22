@@ -1,13 +1,21 @@
-// import styles from '@/styles/Home.module.css'
-import { Button } from 'antd'
-import Link from 'next/link'
+import { HomeContent } from '@/components/content/home';
+import { LoginGuard } from '@/components/guard';
+import { Logo2Icon } from '@/components/icon';
+import { HeaderLayout, PageLayout } from '@/components/layout';
+
+function HomeHeader() {
+  return <HeaderLayout
+    title={<Logo2Icon height={24} />}
+  />
+}
 
 export default function HomePage() {
 
-  return <div>
-    HomePage
-    <Link href={'/login'}>
-      <Button >test</Button>
-    </Link>
-  </div>
+  return <LoginGuard>
+    <PageLayout
+      header={<HomeHeader />}
+      content={<HomeContent />}
+    />
+  </LoginGuard> 
+
 }

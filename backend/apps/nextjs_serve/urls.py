@@ -3,6 +3,8 @@ from django.conf import settings
 
 from .finder import NextJsFinder
 from .views import NextJsView
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.shortcuts import redirect
 
 
 def page_path(template: str):
@@ -15,15 +17,20 @@ def page_path(template: str):
     if route == 'index':
         route = ''
 
-    return path(route, NextJsView.as_view(template_name=template))
+    view = ensure_csrf_cookie(NextJsView.as_view(template_name=template))
+
+    return path(route, view)
 
 
 finder = NextJsFinder()
 
-urlpatterns = [
-    page_path(template) for template in finder.list_template()
-]
-
 if settings.DEBUG:
     from django.conf.urls.static import static
-    urlpatterns += static('/', document_root=finder.NEXTJS_DIR)
+    urlpatterns = [
+        path('init', ensure_csrf_cookie(lambda req: redirect('/'))),
+        *static('/', document_root=finder.NEXTJS_DIR),
+    ]
+else:
+    urlpatterns = [
+        page_path(template) for template in finder.list_template()
+    ]

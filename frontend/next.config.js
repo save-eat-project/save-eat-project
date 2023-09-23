@@ -24,12 +24,14 @@ const nextConfig = {
   ...process.env.NODE_ENV === 'development' && {
     output: undefined,
     async rewrites() {
-      return [
-        {
-          source: '/:path*',
-          destination: 'http://127.0.0.1:8000/:path*',
-        },
-      ]
+      return {
+        fallback: [
+          {
+            source: '/:path*',
+            destination: 'http://127.0.0.1:8000/:path*',
+          },
+        ]
+      }
     },
     async redirects(){
       return [

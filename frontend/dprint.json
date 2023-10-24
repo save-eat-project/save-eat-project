@@ -1,0 +1,24 @@
+{
+  "newLineKind": "auto",
+  "typescript": {
+    "semiColons": "asi",
+    "useTabs": true,
+    "typeLiteral.separatorKind": "comma",
+    "jsx.multiLineParens": "never"
+  },
+  "json": {
+  },
+  "excludes": [
+    "**/node_modules",
+    "**/*-lock.json",
+    ".next",
+    "out"
+  ],
+  "includes": [
+    "**/*.{ts,tsx,js,jsx,json}"
+  ],
+  "plugins": [
+    "https://plugins.dprint.dev/typescript-0.87.1.wasm",
+    "https://plugins.dprint.dev/json-0.17.4.wasm"
+  ]
+}

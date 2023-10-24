@@ -6,7 +6,8 @@
     "dev": "concurrently \"cd ../backend/ && pipenv run python manage.py runserver\" \"next dev\"",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "dprint fmt"
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
@@ -31,6 +32,7 @@
     "@types/google.accounts": "^0.0.9",
     "autoprefixer": "^10.4.15",
     "concurrently": "^8.2.1",
+    "dprint": "^0.41.0",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-nested": "^6.0.1",
     "postcss-preset-env": "^9.1.1"

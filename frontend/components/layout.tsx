@@ -1,10 +1,9 @@
 import { SpoqaHanSansNeoFont } from "@/lib/font"
+import BackIcon from "@material-design-icons/svg/round/arrow_back_ios_new.svg"
+import { Button } from "antd"
 import { useRouter } from "next/router"
 import { ReactNode } from "react"
-import styled from 'styled-components'
-import BackIcon from '@material-design-icons/svg/round/arrow_back_ios_new.svg'
-import { Button } from "antd"
-
+import styled from "styled-components"
 
 const PageContainer = styled.div`
 	position: absolute;
@@ -33,11 +32,11 @@ export function PageLayout(props: LayoutProps) {
 }
 
 type HeaderContainerProps = {
-	transparent?: boolean
+	transparent?: boolean,
 }
 const HeaderContainer = styled.div<HeaderContainerProps>`
 	height: 48px;
-	background-color: ${props => props.transparent ? 'transparent' : 'white'};
+	background-color: ${props => props.transparent ? "transparent" : "white"};
 	position: relative;
 	
 	.left {
@@ -78,22 +77,21 @@ const HeaderContainer = styled.div<HeaderContainerProps>`
 `
 
 type HeaderLayoutProps = {
-	transparent?: boolean
+	transparent?: boolean,
 	left?: ReactNode,
 	title?: ReactNode,
 	right?: ReactNode,
 }
 export function HeaderLayout(props: HeaderLayoutProps) {
 	return <HeaderContainer transparent={props.transparent}>
-		<div className={'title'}>{props.title}</div>
-		<div className={'left'}>{props.left}</div>
-		<div className={'right'}>{props.right}</div>
+		<div className={"title"}>{props.title}</div>
+		<div className={"left"}>{props.left}</div>
+		<div className={"right"}>{props.right}</div>
 	</HeaderContainer>
 }
 
-
 type NavigationHeaderProps = {
-	transparent?: boolean
+	transparent?: boolean,
 	title?: ReactNode,
 	right?: ReactNode,
 }

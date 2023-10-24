@@ -6,7 +6,8 @@
     "dev": "concurrently \"cd ../backend/ && pipenv run python manage.py runserver\" \"next dev\"",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "dprint fmt $(git ls-files \"*.js\" \"*.ts\" \"*.tsx\")"
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",

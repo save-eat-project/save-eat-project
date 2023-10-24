@@ -1,10 +1,10 @@
-import { useLoginStatusQuery, useUserActive } from "@/hook/user";
-import { ReactNode, useEffect } from "react";
+import { useLoginStatusQuery, useUserActive } from "@/hook/user"
+import { ReactNode, useEffect } from "react"
 
-import { LogoIcon } from "@/components/icon";
-import { LoadingOutlined } from "@ant-design/icons";
-import styled from "styled-components";
-import { useRouter } from "next/router";
+import { LogoIcon } from "@/components/icon"
+import { LoadingOutlined } from "@ant-design/icons"
+import { useRouter } from "next/router"
+import styled from "styled-components"
 
 const SplashContainer = styled.div<{ visible?: boolean }>`
     position: absolute;
@@ -23,42 +23,39 @@ const SplashContainer = styled.div<{ visible?: boolean }>`
 `
 
 type SplashCoverProps = {
-    visible: boolean
+	visible: boolean,
 }
 export function SplashCover(props: SplashCoverProps) {
-    return <SplashContainer visible={props.visible}>
-        <LogoIcon height={200} width={200} />
-        <LoadingOutlined style={{ fontSize: 36, marginTop: 36 }} spin />
-    </SplashContainer>
+	return <SplashContainer visible={props.visible}>
+		<LogoIcon height={200} width={200} />
+		<LoadingOutlined style={{ fontSize: 36, marginTop: 36 }} spin />
+	</SplashContainer>
 }
 
 type LoginGuardProps = {
-    children?: ReactNode
+	children?: ReactNode,
 }
 export function LoginGuard(props: LoginGuardProps) {
-    const { isSuccess, data: loginStatus } = useLoginStatusQuery()
-    const router = useRouter()
+	const { isSuccess, data: loginStatus } = useLoginStatusQuery()
+	const router = useRouter()
 
+	useEffect(() => {
+		if (!isSuccess) return
+		switch (loginStatus) {
+			case false:
+			case "logout":
+				router.replace("/login")
+				break
+		}
+	}, [isSuccess, loginStatus])
 
-    useEffect(() => { 
-        if (!isSuccess) return;
-        switch (loginStatus) {
-            case false:
-            case 'logout':
-                router.replace('/login')
-                break;
-        }
-    }, [isSuccess, loginStatus])
+	if (isSuccess) {
+		switch (loginStatus) {
+			case true:
+			case "logout":
+				return props.children
+		}
+	}
 
-
-    if (isSuccess) {
-        switch (loginStatus) {
-            case true:
-            case 'logout':
-                return props.children
-        }
-    }
-
-    return <SplashCover visible/>
-
+	return <SplashCover visible />
 }

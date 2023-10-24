@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "dprint fmt $(git ls-files \"*.js\" \"*.ts\" \"*.tsx\")"
+    "format": "dprint fmt"
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",

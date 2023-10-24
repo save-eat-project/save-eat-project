@@ -1,4 +1,5 @@
 {
+  "newLineKind": "auto",
   "typescript": {
     "semiColons": "asi",
     "useTabs": true,
